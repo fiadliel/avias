@@ -1,6 +1,3 @@
-[submodule "gen/botocore"]
-	path = gen/botocore
-	url = https://github.com/boto/botocore.git
 [submodule "gen/aws-sdk-java-v2"]
 	path = gen/aws-sdk-java-v2
 	url = https://github.com/aws/aws-sdk-java-v2
