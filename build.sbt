@@ -1,4 +1,5 @@
 inThisBuild(List(
+  organization := "org.lyranthe.araethura",
   scalaOrganization := "org.typelevel",
   version := "0.0.1-SNAPSHOT",
   scalaVersion := "2.12.4-bin-typelevel-4",

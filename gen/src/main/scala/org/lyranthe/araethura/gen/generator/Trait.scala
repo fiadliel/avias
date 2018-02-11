@@ -62,20 +62,17 @@ class Method(operation: Lit.String,
   def declType(effectType: Type): Type =
     Type.Apply(effectType, List(innerType))
 
-  def definition(effectType: Type, body: Option[Term]): List[Stat] = {
+  def definition(effectType: Type, body: Option[Term]): Stat = {
     body match {
       case None =>
-          q"def $scalaName(...${paramss(effectType)}): ${declType(effectType)}" :: Nil
-          //requiredParamss(effectType).map(p => q"def $scalaName(...${List(p)}): ${declType(effectType)}").toList
+          q"def $scalaName(...${paramss(effectType)}): ${declType(effectType)}"
       case Some(b) =>
         q"override def $scalaName(...${paramss(effectType)}): ${declType(
-          effectType)} = $b" :: Nil
-//        requiredParamss(effectType).map(p => q"override def $scalaName(...${List(p)}): ${declType(
-//          effectType)} = $b").toList
+          effectType)} = $b"
     }
   }
 
-  def http4sImplementation: List[Stat] = {
+  def http4sImplementation: Stat = {
     val baseTargs: List[Type] = List(t"F", innerType)
     val baseArgs: List[Term] = List(q"client",
                                     q"awsData",
