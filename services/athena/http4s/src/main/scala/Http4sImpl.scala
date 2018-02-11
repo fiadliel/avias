@@ -1,0 +1,19 @@
+package org.lyranthe.araethura.athena.http4s
+import org.http4s.Method._
+import org.lyranthe.araethura.athena.circe._
+import org.lyranthe.araethura.athena.models
+class AmazonathenaClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: org.lyranthe.araethura.common.AwsData[F]) extends org.lyranthe.araethura.athena.Amazonathena[F] {
+  private[this] final val ServiceType: String = "athena"
+  private[this] final val ServiceAndPrefix: Option[String] = Some("AmazonAthena")
+  override def listQueryExecutions(input: models.ListQueryExecutionsInput): F[models.ListQueryExecutionsOutput] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.ListQueryExecutionsOutput, models.ListQueryExecutionsInput](client, awsData, ServiceType, ServiceAndPrefix, "ListQueryExecutions", POST, "/", input)
+  override def getQueryExecution(input: models.GetQueryExecutionInput): F[models.GetQueryExecutionOutput] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.GetQueryExecutionOutput, models.GetQueryExecutionInput](client, awsData, ServiceType, ServiceAndPrefix, "GetQueryExecution", POST, "/", input)
+  override def deleteNamedQuery(input: models.DeleteNamedQueryInput): F[scala.Unit] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, scala.Unit, models.DeleteNamedQueryInput](client, awsData, ServiceType, ServiceAndPrefix, "DeleteNamedQuery", POST, "/", input)
+  override def batchGetQueryExecution(input: models.BatchGetQueryExecutionInput): F[models.BatchGetQueryExecutionOutput] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.BatchGetQueryExecutionOutput, models.BatchGetQueryExecutionInput](client, awsData, ServiceType, ServiceAndPrefix, "BatchGetQueryExecution", POST, "/", input)
+  override def getNamedQuery(input: models.GetNamedQueryInput): F[models.GetNamedQueryOutput] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.GetNamedQueryOutput, models.GetNamedQueryInput](client, awsData, ServiceType, ServiceAndPrefix, "GetNamedQuery", POST, "/", input)
+  override def stopQueryExecution(input: models.StopQueryExecutionInput): F[scala.Unit] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, scala.Unit, models.StopQueryExecutionInput](client, awsData, ServiceType, ServiceAndPrefix, "StopQueryExecution", POST, "/", input)
+  override def getQueryResults(input: models.GetQueryResultsInput): F[models.GetQueryResultsOutput] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.GetQueryResultsOutput, models.GetQueryResultsInput](client, awsData, ServiceType, ServiceAndPrefix, "GetQueryResults", POST, "/", input)
+  override def createNamedQuery(input: models.CreateNamedQueryInput): F[models.CreateNamedQueryOutput] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.CreateNamedQueryOutput, models.CreateNamedQueryInput](client, awsData, ServiceType, ServiceAndPrefix, "CreateNamedQuery", POST, "/", input)
+  override def startQueryExecution(input: models.StartQueryExecutionInput): F[models.StartQueryExecutionOutput] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.StartQueryExecutionOutput, models.StartQueryExecutionInput](client, awsData, ServiceType, ServiceAndPrefix, "StartQueryExecution", POST, "/", input)
+  override def batchGetNamedQuery(input: models.BatchGetNamedQueryInput): F[models.BatchGetNamedQueryOutput] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.BatchGetNamedQueryOutput, models.BatchGetNamedQueryInput](client, awsData, ServiceType, ServiceAndPrefix, "BatchGetNamedQuery", POST, "/", input)
+  override def listNamedQueries(input: models.ListNamedQueriesInput): F[models.ListNamedQueriesOutput] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.ListNamedQueriesOutput, models.ListNamedQueriesInput](client, awsData, ServiceType, ServiceAndPrefix, "ListNamedQueries", POST, "/", input)
+}

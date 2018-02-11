@@ -1,0 +1,16 @@
+[0m[[0m[0minfo[0m] [0m[0mMain Scala API documentation to /Users/gary/Code/github/fiadliel/araethura/common/target/scala-2.12/api...[0m
+[0m[[0m[0mdebug[0m] [0m[0mGetting org.scala-sbt:compiler-bridge_2.12:1.1.0-RC4:compile for Scala 2.12.4-bin-typelevel-4[0m
+[0m[[0m[0mdebug[0m] [0m[0mCalling Scaladoc with arguments:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	-Yinduction-heuristics[0m
+[0m[[0m[0mdebug[0m] [0m[0m	-Xstrict-patmat-analysis[0m
+[0m[[0m[0mdebug[0m] [0m[0m	-Xlint:strict-unsealed-patmat[0m
+[0m[[0m[0mdebug[0m] [0m[0m	-d[0m
+[0m[[0m[0mdebug[0m] [0m[0m	/Users/gary/Code/github/fiadliel/araethura/common/target/scala-2.12/api[0m
+[0m[[0m[0mdebug[0m] [0m[0m	-bootclasspath[0m
+[0m[[0m[0mdebug[0m] [0m[0m	/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/classes:/Users/gary/.coursier/cache/v1/https/repo1.maven.org/maven2/org/typelevel/scala-library/2.12.4-bin-typelevel-4/scala-library-2.12.4-bin-typelevel-4.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0m	-classpath[0m
+[0m[[0m[0mdebug[0m] [0m[0m	/Users/gary/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scodec/scodec-bits_2.12/1.1.5/scodec-bits_2.12-1.1.5.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0m	/Users/gary/Code/github/fiadliel/araethura/common/src/main/scala/AwsData.scala[0m
+[0m[[0m[33mwarn[0m] [0m[0mthere were two feature warnings; re-run with -feature for details[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[0minfo[0m] [0m[0mMain Scala API documentation successful.[0m

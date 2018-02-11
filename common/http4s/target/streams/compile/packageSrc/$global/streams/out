@@ -1,0 +1,13 @@
+[0m[[0m[0minfo[0m] [0m[0mPackaging /Users/gary/Code/github/fiadliel/araethura/common/http4s/target/scala-2.12/common-http4s_2.12-0.0.1-SNAPSHOT-sources.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	CanonicalRequest.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/gary/Code/github/fiadliel/araethura/common/http4s/src/main/scala/CanonicalRequest.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	CredentialScope.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/gary/Code/github/fiadliel/araethura/common/http4s/src/main/scala/CredentialScope.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SigningString.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/gary/Code/github/fiadliel/araethura/common/http4s/src/main/scala/SigningString.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	CurrentTime.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/gary/Code/github/fiadliel/araethura/common/http4s/src/main/scala/CurrentTime.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ClientUtils.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/gary/Code/github/fiadliel/araethura/common/http4s/src/main/scala/ClientUtils.scala[0m
+[0m[[0m[0minfo[0m] [0m[0mDone packaging.[0m

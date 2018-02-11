@@ -1,0 +1,23 @@
+package org.lyranthe.araethura.events.http4s
+import org.http4s.Method._
+import org.lyranthe.araethura.events.circe._
+import org.lyranthe.araethura.events.models
+class AmazoneventsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: org.lyranthe.araethura.common.AwsData[F]) extends org.lyranthe.araethura.events.Amazonevents[F] {
+  private[this] final val ServiceType: String = "events"
+  private[this] final val ServiceAndPrefix: Option[String] = Some("AWSEvents")
+  override def putEvents(input: models.PutEventsRequest): F[models.PutEventsResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.PutEventsResponse, models.PutEventsRequest](client, awsData, ServiceType, ServiceAndPrefix, "PutEvents", POST, "/", input)
+  override def removePermission(input: models.RemovePermissionRequest): F[Unit] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, Unit, models.RemovePermissionRequest](client, awsData, ServiceType, ServiceAndPrefix, "RemovePermission", POST, "/", input)
+  override def describeEventBus: F[models.DescribeEventBusResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.DescribeEventBusResponse, scala.Unit](client, awsData, ServiceType, ServiceAndPrefix, "DescribeEventBus", POST, "/", ())
+  override def describeRule(input: models.DescribeRuleRequest): F[models.DescribeRuleResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.DescribeRuleResponse, models.DescribeRuleRequest](client, awsData, ServiceType, ServiceAndPrefix, "DescribeRule", POST, "/", input)
+  override def disableRule(input: models.DisableRuleRequest): F[Unit] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, Unit, models.DisableRuleRequest](client, awsData, ServiceType, ServiceAndPrefix, "DisableRule", POST, "/", input)
+  override def testEventPattern(input: models.TestEventPatternRequest): F[models.TestEventPatternResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.TestEventPatternResponse, models.TestEventPatternRequest](client, awsData, ServiceType, ServiceAndPrefix, "TestEventPattern", POST, "/", input)
+  override def enableRule(input: models.EnableRuleRequest): F[Unit] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, Unit, models.EnableRuleRequest](client, awsData, ServiceType, ServiceAndPrefix, "EnableRule", POST, "/", input)
+  override def listTargetsByRule(input: models.ListTargetsByRuleRequest): F[models.ListTargetsByRuleResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.ListTargetsByRuleResponse, models.ListTargetsByRuleRequest](client, awsData, ServiceType, ServiceAndPrefix, "ListTargetsByRule", POST, "/", input)
+  override def deleteRule(input: models.DeleteRuleRequest): F[Unit] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, Unit, models.DeleteRuleRequest](client, awsData, ServiceType, ServiceAndPrefix, "DeleteRule", POST, "/", input)
+  override def removeTargets(input: models.RemoveTargetsRequest): F[models.RemoveTargetsResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.RemoveTargetsResponse, models.RemoveTargetsRequest](client, awsData, ServiceType, ServiceAndPrefix, "RemoveTargets", POST, "/", input)
+  override def putRule(input: models.PutRuleRequest): F[models.PutRuleResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.PutRuleResponse, models.PutRuleRequest](client, awsData, ServiceType, ServiceAndPrefix, "PutRule", POST, "/", input)
+  override def putPermission(input: models.PutPermissionRequest): F[Unit] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, Unit, models.PutPermissionRequest](client, awsData, ServiceType, ServiceAndPrefix, "PutPermission", POST, "/", input)
+  override def listRuleNamesByTarget(input: models.ListRuleNamesByTargetRequest): F[models.ListRuleNamesByTargetResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.ListRuleNamesByTargetResponse, models.ListRuleNamesByTargetRequest](client, awsData, ServiceType, ServiceAndPrefix, "ListRuleNamesByTarget", POST, "/", input)
+  override def putTargets(input: models.PutTargetsRequest): F[models.PutTargetsResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.PutTargetsResponse, models.PutTargetsRequest](client, awsData, ServiceType, ServiceAndPrefix, "PutTargets", POST, "/", input)
+  override def listRules(input: models.ListRulesRequest): F[models.ListRulesResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.ListRulesResponse, models.ListRulesRequest](client, awsData, ServiceType, ServiceAndPrefix, "ListRules", POST, "/", input)
+}

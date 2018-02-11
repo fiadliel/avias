@@ -1,0 +1,23 @@
+package org.lyranthe.araethura.cloudhsm
+trait Amazoncloudhsm[F[_]] {
+  def deleteLunaClient(input: models.DeleteLunaClientRequest): F[models.DeleteLunaClientResponse]
+  def describeHapg(input: models.DescribeHapgRequest): F[models.DescribeHapgResponse]
+  def describeLunaClient(input: models.DescribeLunaClientRequest): F[models.DescribeLunaClientResponse]
+  def modifyLunaClient(input: models.ModifyLunaClientRequest): F[models.ModifyLunaClientResponse]
+  def createHapg(input: models.CreateHapgRequest): F[models.CreateHapgResponse]
+  def addTagsToResource(input: models.AddTagsToResourceRequest): F[models.AddTagsToResourceResponse]
+  def listHapgs(input: models.ListHapgsRequest): F[models.ListHapgsResponse]
+  def listLunaClients(input: models.ListLunaClientsRequest): F[models.ListLunaClientsResponse]
+  def deleteHapg(input: models.DeleteHapgRequest): F[models.DeleteHapgResponse]
+  def getConfig(input: models.GetConfigRequest): F[models.GetConfigResponse]
+  def listTagsForResource(input: models.ListTagsForResourceRequest): F[models.ListTagsForResourceResponse]
+  def listAvailableZones: F[models.ListAvailableZonesResponse]
+  def modifyHapg(input: models.ModifyHapgRequest): F[models.ModifyHapgResponse]
+  def removeTagsFromResource(input: models.RemoveTagsFromResourceRequest): F[models.RemoveTagsFromResourceResponse]
+  def listHsms(input: models.ListHsmsRequest): F[models.ListHsmsResponse]
+  def deleteHsm(input: models.DeleteHsmRequest): F[models.DeleteHsmResponse]
+  def createHsm(input: models.CreateHsmRequest): F[models.CreateHsmResponse]
+  def createLunaClient(input: models.CreateLunaClientRequest): F[models.CreateLunaClientResponse]
+  def describeHsm(input: models.DescribeHsmRequest): F[models.DescribeHsmResponse]
+  def modifyHsm(input: models.ModifyHsmRequest): F[models.ModifyHsmResponse]
+}

@@ -1,0 +1,22 @@
+package org.lyranthe.araethura.discovery
+trait Amazondiscovery[F[_]] {
+  def listConfigurations(input: models.ListConfigurationsRequest): F[models.ListConfigurationsResponse]
+  def listServerNeighbors(input: models.ListServerNeighborsRequest): F[models.ListServerNeighborsResponse]
+  def deleteTags(input: models.DeleteTagsRequest): F[scala.Unit]
+  def describeAgents(input: models.DescribeAgentsRequest): F[models.DescribeAgentsResponse]
+  def createTags(input: models.CreateTagsRequest): F[scala.Unit]
+  def describeTags(input: models.DescribeTagsRequest): F[models.DescribeTagsResponse]
+  def describeExportConfigurations(input: models.DescribeExportConfigurationsRequest): F[models.DescribeExportConfigurationsResponse]
+  def updateApplication(input: models.UpdateApplicationRequest): F[scala.Unit]
+  def startDataCollectionByAgentIds(input: models.StartDataCollectionByAgentIdsRequest): F[models.StartDataCollectionByAgentIdsResponse]
+  def createApplication(input: models.CreateApplicationRequest): F[models.CreateApplicationResponse]
+  def startExportTask(input: models.StartExportTaskRequest): F[models.StartExportTaskResponse]
+  def exportConfigurations: F[models.ExportConfigurationsResponse]
+  def associateConfigurationItemsToApplication(input: models.AssociateConfigurationItemsToApplicationRequest): F[scala.Unit]
+  def stopDataCollectionByAgentIds(input: models.StopDataCollectionByAgentIdsRequest): F[models.StopDataCollectionByAgentIdsResponse]
+  def disassociateConfigurationItemsFromApplication(input: models.DisassociateConfigurationItemsFromApplicationRequest): F[scala.Unit]
+  def describeExportTasks(input: models.DescribeExportTasksRequest): F[models.DescribeExportTasksResponse]
+  def getDiscoverySummary: F[models.GetDiscoverySummaryResponse]
+  def describeConfigurations(input: models.DescribeConfigurationsRequest): F[models.DescribeConfigurationsResponse]
+  def deleteApplications(input: models.DeleteApplicationsRequest): F[scala.Unit]
+}

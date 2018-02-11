@@ -1,0 +1,21 @@
+package org.lyranthe.araethura.codestar
+trait Amazoncodestar[F[_]] {
+  def associateTeamMember(input: models.AssociateTeamMemberRequest): F[models.AssociateTeamMemberResult]
+  def updateTeamMember(input: models.UpdateTeamMemberRequest): F[models.UpdateTeamMemberResult]
+  def createUserProfile(input: models.CreateUserProfileRequest): F[models.CreateUserProfileResult]
+  def tagProject(input: models.TagProjectRequest): F[models.TagProjectResult]
+  def listUserProfiles(input: models.ListUserProfilesRequest): F[models.ListUserProfilesResult]
+  def listResources(input: models.ListResourcesRequest): F[models.ListResourcesResult]
+  def describeUserProfile(input: models.DescribeUserProfileRequest): F[models.DescribeUserProfileResult]
+  def listTagsForProject(input: models.ListTagsForProjectRequest): F[models.ListTagsForProjectResult]
+  def describeProject(input: models.DescribeProjectRequest): F[models.DescribeProjectResult]
+  def deleteProject(input: models.DeleteProjectRequest): F[models.DeleteProjectResult]
+  def listProjects(input: models.ListProjectsRequest): F[models.ListProjectsResult]
+  def updateProject(input: models.UpdateProjectRequest): F[scala.Unit]
+  def createProject(input: models.CreateProjectRequest): F[models.CreateProjectResult]
+  def untagProject(input: models.UntagProjectRequest): F[scala.Unit]
+  def listTeamMembers(input: models.ListTeamMembersRequest): F[models.ListTeamMembersResult]
+  def updateUserProfile(input: models.UpdateUserProfileRequest): F[models.UpdateUserProfileResult]
+  def disassociateTeamMember(input: models.DisassociateTeamMemberRequest): F[scala.Unit]
+  def deleteUserProfile(input: models.DeleteUserProfileRequest): F[models.DeleteUserProfileResult]
+}

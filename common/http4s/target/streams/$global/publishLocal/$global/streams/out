@@ -1,0 +1,10 @@
+[0m[[0m[0minfo[0m] [0m[0m:: delivering :: common-http4s#common-http4s_2.12;0.0.1-SNAPSHOT :: 0.0.1-SNAPSHOT :: integration :: Sun Feb 11 01:30:10 GMT 2018[0m
+[0m[[0m[0mdebug[0m] [0m[0m	options = status=integration pubdate=Sun Feb 11 01:30:10 GMT 2018 validate=true resolveDynamicRevisions=true merge=true resolveId=null pubBranch=null[0m
+[0m[[0m[0minfo[0m] [0m[0m	delivering ivy file to /Users/gary/Code/github/fiadliel/araethura/common/http4s/target/scala-2.12/ivy-0.0.1-SNAPSHOT.xml[0m
+[0m[[0m[0mdebug[0m] [0m[0m	deliver done (4ms)[0m
+[0m[[0m[0mdebug[0m] [0m[0mlocal do not support transaction. ivy pattern does not use revision as a directory[0m
+[0m[[0m[0minfo[0m] [0m[0m	published common-http4s_2.12 to /Users/gary/.ivy2/local/common-http4s/common-http4s_2.12/0.0.1-SNAPSHOT/poms/common-http4s_2.12.pom[0m
+[0m[[0m[0minfo[0m] [0m[0m	published common-http4s_2.12 to /Users/gary/.ivy2/local/common-http4s/common-http4s_2.12/0.0.1-SNAPSHOT/jars/common-http4s_2.12.jar[0m
+[0m[[0m[0minfo[0m] [0m[0m	published common-http4s_2.12 to /Users/gary/.ivy2/local/common-http4s/common-http4s_2.12/0.0.1-SNAPSHOT/srcs/common-http4s_2.12-sources.jar[0m
+[0m[[0m[0minfo[0m] [0m[0m	published common-http4s_2.12 to /Users/gary/.ivy2/local/common-http4s/common-http4s_2.12/0.0.1-SNAPSHOT/docs/common-http4s_2.12-javadoc.jar[0m
+[0m[[0m[0minfo[0m] [0m[0m	published ivy to /Users/gary/.ivy2/local/common-http4s/common-http4s_2.12/0.0.1-SNAPSHOT/ivys/ivy.xml[0m

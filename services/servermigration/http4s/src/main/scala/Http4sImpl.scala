@@ -1,0 +1,19 @@
+package org.lyranthe.araethura.servermigration.http4s
+import org.http4s.Method._
+import org.lyranthe.araethura.servermigration.circe._
+import org.lyranthe.araethura.servermigration.models
+class AmazonservermigrationClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: org.lyranthe.araethura.common.AwsData[F]) extends org.lyranthe.araethura.servermigration.Amazonservermigration[F] {
+  private[this] final val ServiceType: String = "sms"
+  private[this] final val ServiceAndPrefix: Option[String] = Some("AWSServerMigrationService_V2016_10_24")
+  override def getReplicationRuns(input: models.GetReplicationRunsRequest): F[models.GetReplicationRunsResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.GetReplicationRunsResponse, models.GetReplicationRunsRequest](client, awsData, ServiceType, ServiceAndPrefix, "GetReplicationRuns", POST, "/", input)
+  override def updateReplicationJob(input: models.UpdateReplicationJobRequest): F[scala.Unit] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, scala.Unit, models.UpdateReplicationJobRequest](client, awsData, ServiceType, ServiceAndPrefix, "UpdateReplicationJob", POST, "/", input)
+  override def getServers(input: models.GetServersRequest): F[models.GetServersResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.GetServersResponse, models.GetServersRequest](client, awsData, ServiceType, ServiceAndPrefix, "GetServers", POST, "/", input)
+  override def getConnectors(input: models.GetConnectorsRequest): F[models.GetConnectorsResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.GetConnectorsResponse, models.GetConnectorsRequest](client, awsData, ServiceType, ServiceAndPrefix, "GetConnectors", POST, "/", input)
+  override def startOnDemandReplicationRun(input: models.StartOnDemandReplicationRunRequest): F[models.StartOnDemandReplicationRunResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.StartOnDemandReplicationRunResponse, models.StartOnDemandReplicationRunRequest](client, awsData, ServiceType, ServiceAndPrefix, "StartOnDemandReplicationRun", POST, "/", input)
+  override def deleteReplicationJob(input: models.DeleteReplicationJobRequest): F[scala.Unit] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, scala.Unit, models.DeleteReplicationJobRequest](client, awsData, ServiceType, ServiceAndPrefix, "DeleteReplicationJob", POST, "/", input)
+  override def disassociateConnector(input: models.DisassociateConnectorRequest): F[scala.Unit] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, scala.Unit, models.DisassociateConnectorRequest](client, awsData, ServiceType, ServiceAndPrefix, "DisassociateConnector", POST, "/", input)
+  override def getReplicationJobs(input: models.GetReplicationJobsRequest): F[models.GetReplicationJobsResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.GetReplicationJobsResponse, models.GetReplicationJobsRequest](client, awsData, ServiceType, ServiceAndPrefix, "GetReplicationJobs", POST, "/", input)
+  override def deleteServerCatalog: F[scala.Unit] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, scala.Unit, scala.Unit](client, awsData, ServiceType, ServiceAndPrefix, "DeleteServerCatalog", POST, "/", ())
+  override def importServerCatalog: F[scala.Unit] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, scala.Unit, scala.Unit](client, awsData, ServiceType, ServiceAndPrefix, "ImportServerCatalog", POST, "/", ())
+  override def createReplicationJob(input: models.CreateReplicationJobRequest): F[models.CreateReplicationJobResponse] = org.lyranthe.araethura.common.http4s.ClientUtils.doRequest[F, models.CreateReplicationJobResponse, models.CreateReplicationJobRequest](client, awsData, ServiceType, ServiceAndPrefix, "CreateReplicationJob", POST, "/", input)
+}

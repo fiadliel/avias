@@ -1,0 +1,7 @@
+[0m[[0m[31merror[0m] [0m[0m/Users/gary/Code/github/fiadliel/araethura/common/circe/src/main/scala/DefaultCodecs.scala:31:26: constructor Encoder in class Encoder cannot be accessed in object DefaultCodecs[0m
+[0m[[0m[31merror[0m] [0m[0m  final val b64Encoder = new Base64.Encoder()[0m
+[0m[[0m[31merror[0m] [0m[0m                         ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/gary/Code/github/fiadliel/araethura/common/circe/src/main/scala/DefaultCodecs.scala:32:26: java.util.Base64.Decoder does not have a constructor[0m
+[0m[[0m[31merror[0m] [0m[0m  final val b64Decoder = new Base64.Decoder()[0m
+[0m[[0m[31merror[0m] [0m[0m                         ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

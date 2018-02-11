@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>common-http4s</groupId>
+    <artifactId>common-http4s_2.12</artifactId>
+    <packaging>jar</packaging>
+    <description>common-http4s</description>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>common-http4s</name>
+    <organization>
+        <name>common-http4s</name>
+    </organization>
+    <dependencies>
+        <dependency>
+            <groupId>org.typelevel</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.12.4-bin-typelevel-4</version>
+        </dependency>
+        <dependency>
+            <groupId>common-circe</groupId>
+            <artifactId>common-circe_2.12</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.jmcardon</groupId>
+            <artifactId>tsec-mac_2.12</artifactId>
+            <version>0.0.1-M7</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.jmcardon</groupId>
+            <artifactId>tsec-md_2.12</artifactId>
+            <version>0.0.1-M7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.http4s</groupId>
+            <artifactId>http4s-client_2.12</artifactId>
+            <version>0.18.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.http4s</groupId>
+            <artifactId>http4s-circe_2.12</artifactId>
+            <version>0.18.0</version>
+        </dependency>
+    </dependencies>
+    <repositories>
+        <repository>
+            <id>jmcardonatbintray</id>
+            <name>jmcardon at bintray</name>
+            <url>https://dl.bintray.com/jmcardon/tsec/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+</project>

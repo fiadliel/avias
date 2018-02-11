@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>common</groupId>
+    <artifactId>common_2.12</artifactId>
+    <packaging>jar</packaging>
+    <description>common</description>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>common</name>
+    <organization>
+        <name>common</name>
+    </organization>
+    <dependencies>
+        <dependency>
+            <groupId>org.typelevel</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.12.4-bin-typelevel-4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scodec</groupId>
+            <artifactId>scodec-bits_2.12</artifactId>
+            <version>1.1.5</version>
+        </dependency>
+    </dependencies>
+</project>

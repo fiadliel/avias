@@ -1,0 +1,22 @@
+package org.lyranthe.araethura.stepfunctions
+trait Amazonstepfunctions[F[_]] {
+  def listStateMachines(input: models.ListStateMachinesInput): F[models.ListStateMachinesOutput]
+  def createActivity(input: models.CreateActivityInput): F[models.CreateActivityOutput]
+  def startExecution(input: models.StartExecutionInput): F[models.StartExecutionOutput]
+  def sendTaskFailure(input: models.SendTaskFailureInput): F[scala.Unit]
+  def describeActivity(input: models.DescribeActivityInput): F[models.DescribeActivityOutput]
+  def stopExecution(input: models.StopExecutionInput): F[models.StopExecutionOutput]
+  def deleteActivity(input: models.DeleteActivityInput): F[scala.Unit]
+  def describeStateMachineForExecution(input: models.DescribeStateMachineForExecutionInput): F[models.DescribeStateMachineForExecutionOutput]
+  def getExecutionHistory(input: models.GetExecutionHistoryInput): F[models.GetExecutionHistoryOutput]
+  def listActivities(input: models.ListActivitiesInput): F[models.ListActivitiesOutput]
+  def deleteStateMachine(input: models.DeleteStateMachineInput): F[scala.Unit]
+  def updateStateMachine(input: models.UpdateStateMachineInput): F[models.UpdateStateMachineOutput]
+  def createStateMachine(input: models.CreateStateMachineInput): F[models.CreateStateMachineOutput]
+  def getActivityTask(input: models.GetActivityTaskInput): F[models.GetActivityTaskOutput]
+  def sendTaskHeartbeat(input: models.SendTaskHeartbeatInput): F[scala.Unit]
+  def listExecutions(input: models.ListExecutionsInput): F[models.ListExecutionsOutput]
+  def sendTaskSuccess(input: models.SendTaskSuccessInput): F[scala.Unit]
+  def describeStateMachine(input: models.DescribeStateMachineInput): F[models.DescribeStateMachineOutput]
+  def describeExecution(input: models.DescribeExecutionInput): F[models.DescribeExecutionOutput]
+}
