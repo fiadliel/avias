@@ -8,7 +8,7 @@ import tsec.common._
 import tsec.messagedigests._
 import tsec.messagedigests.core._
 
-case class CanonicalRequest(signedHeaders: String, hash: String)
+case class CanonicalRequest(signedHeaders: String, canonicalRequest: String, hash: String)
 
 object CanonicalRequest {
   private def getBodyHash[F[_]: Sync, H: DigestTag](req: Request[F]): F[String] =
@@ -47,6 +47,7 @@ object CanonicalRequest {
 
       CanonicalRequest(
         signedHeaders,
+        canonicalRequest,
         canonicalRequest.getBytes(charset).hash[H].toHexString
       )
     }
