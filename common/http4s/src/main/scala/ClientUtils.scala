@@ -73,7 +73,7 @@ private[araethura] object ClientUtils {
       canonicalRequest <- CanonicalRequest.fromRequest[F, SHA256](request)
       credentialScope = CredentialScope(currentTime, serviceType, awsData.region)
       signingKey <- mkSigningKey[F](currentTime, serviceType, awsData)
-      stringToSign = SigningString.sign[SHA256](currentTime, credentialScope, canonicalRequest.hash)
+      stringToSign = SigningString.stringToSign[SHA256](currentTime, credentialScope, canonicalRequest.hash)
       stringSigned <- JCAMac
         .sign(stringToSign.getBytes(), signingKey)
         .map(_.toHexString)
