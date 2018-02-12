@@ -58,5 +58,4 @@ object CanonicalRequestSuite extends PureTestSuite {
         "f536975d06c0309214f805bb90ccff089219ecd68b2577efef23edd43b7e1a59" =? req.hash
       }
   }
-
 }
