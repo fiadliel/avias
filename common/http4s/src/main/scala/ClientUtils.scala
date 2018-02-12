@@ -1,18 +1,15 @@
 package org.lyranthe.araethura.common.http4s
 
-import java.time.{Instant, ZonedDateTime, ZoneId}
-import java.time.format.DateTimeFormatter
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 import cats._
-import cats.effect.{Effect, Sync}
+import cats.effect.Sync
 import cats.implicits._
 import io.circe.{Decoder, Encoder}
 import org.lyranthe.araethura.common._
-import org.http4s.{EntityDecoder, EntityEncoder, Header, Method, Request, Uri}
+import org.http4s.{Header, Method, Request, Uri}
 import org.http4s.client.Client
-import scodec.bits.ByteVector
 import tsec.common._
 import tsec.mac.imports._
 import tsec.messagedigests.imports._

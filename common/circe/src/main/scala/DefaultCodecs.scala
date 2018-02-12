@@ -1,11 +1,8 @@
 package org.lyranthe.araethura.common
 
-import cats.implicits._
 import io.circe._
 import java.time.Instant
 import java.util.Base64
-
-import scala.util.Try
 
 trait DefaultCodecs {
 //  implicit val byteBufferEncoder: Encoder[ByteBuffer] =

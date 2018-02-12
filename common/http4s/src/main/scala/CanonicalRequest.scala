@@ -7,7 +7,6 @@ import scodec.bits.ByteVector
 import tsec.common._
 import tsec.messagedigests._
 import tsec.messagedigests.core._
-import tsec.messagedigests.imports._
 
 case class CanonicalRequest(signedHeaders: String, hash: String)
 
