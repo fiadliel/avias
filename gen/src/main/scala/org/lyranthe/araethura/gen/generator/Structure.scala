@@ -1,110 +1,129 @@
 package org.lyranthe.araethura.gen.generator
 
-import scala.meta.{Defn, Enumerator, Lit, Pat, Pkg, Term, Type}
+import scala.meta.{Defn, Enumerator, Lit, Pat, Term, Type}
 import scala.meta.quasiquotes._
 
-case class StructureItem(name: Lit.String, structureType: Type) {
-  val isOptional: Boolean = structureType.toString().startsWith("scala.Option")
+case class StructureField(name: String, typ: Type, isOptional: Boolean) {
+  val scalaLiteral = Lit.String(name)
 
   val scalaName: Term.Name = {
-    val upper = name.value.takeWhile(_.isUpper)
-    val afterUpper = name.value.dropWhile(_.isUpper)
+    val upper = name.takeWhile(_.isUpper)
+    val afterUpper = name.dropWhile(_.isUpper)
     Term.Name(upper.toLowerCase + afterUpper)
   }
 
-  val param: Term.Param = {
+  val scalaType: Type = {
     if (isOptional)
-      param"${scalaName}: ${structureType} = None"
+      Type.Apply(Type.Name("scala.Option"), List(typ))
     else
-      param"${scalaName}: ${structureType}"
+      typ
+  }
+
+  val scalaMethodParam: Term.Param = {
+    if (isOptional)
+      Term.Param(List.empty, scalaName, Some(scalaType), Some(Term.Name("scala.None")))
+    else
+      Term.Param(List.empty, scalaName, Some(scalaType), None)
   }
 }
 
 trait Structure {
-  def name: String
+  def typeName: String
+  def scalaType: Type
   def decoder: Defn.Val
   def encoder: Defn.Val
   def definition: Defn
-  def requiredParams: List[StructureItem]
+  def params: List[StructureField]
 }
 
-case class ObjectStructure(scalaTerm: Term.Select, isError: Boolean)
+object Structure {
+  def apply(typePackage: String, typeName: String, isError: Boolean, params: List[StructureField]): Structure = {
+    if (params.isEmpty)
+      ObjectStructure(typePackage, typeName, isError)
+    else
+      ClassStructure(typePackage, typeName, isError, params)
+  }
+}
+
+case class ObjectStructure(typePackage: String, typeName: String, isError: Boolean)
     extends Structure {
-  val name = scalaTerm.toString
-  val encoderName = Pat.Var(Term.Name(scalaTerm.name.value + "Encoder"))
-  val decoderName = Pat.Var(Term.Name(scalaTerm.name.value + "Decoder"))
-  val scalaType = Type.Name(scalaTerm + ".type")
-  val requiredParams = List.empty
+  val scalaType = Type.Select(Term.Name(typePackage), Type.Name(typeName + ".type"))
+  val scalaObjectName = Term.Select(Term.Name(typePackage), Term.Name(typeName))
+  val params: List[StructureField] = List.empty
 
   def decoder: Defn.Val = {
-    q"final implicit val $decoderName: io.circe.Decoder[$scalaType] = io.circe.Decoder.decodeUnit.as($scalaTerm)"
+    val decoderName = Pat.Var(Term.Name(typeName + "Decoder"))
+    q"final implicit val $decoderName: io.circe.Decoder[$scalaType] = io.circe.Decoder.decodeUnit.as($scalaObjectName)"
   }
 
   def encoder: Defn.Val = {
+    val encoderName = Pat.Var(Term.Name(typeName + "Encoder"))
     q"final implicit val $encoderName: io.circe.Encoder[$scalaType] = io.circe.Encoder.instance { o => Json.obj() }"
   }
 
   def definition: Defn = {
-    q"case object ${scalaTerm.name}"
+    q"case object ${Term.Name(typeName)}"
   }
 }
 
-case class ClassStructure(scalaTerm: Term.Select,
+case class ClassStructure(typePackage: String, typeName: String,
                           isError: Boolean,
-                          requiredParams: List[StructureItem], optionalParams: List[StructureItem])
+                          params: List[StructureField])
     extends Structure {
-  val name = scalaTerm.toString
-  val encoderName = Pat.Var(Term.Name(scalaTerm.name.value + "Encoder"))
-  val decoderName = Pat.Var(Term.Name(scalaTerm.name.value + "Decoder"))
-  val scalaType = Type.Name(scalaTerm.toString())
-
-  def monadicDecoder: Term.ForYield = {
-    def extractItem(item: StructureItem): Enumerator.Generator = {
-      enumerator"${p"${item.scalaName}"} <- o.get[${item.structureType}](${item.name})"
-    }
-
-    val enumeratorsnel = (requiredParams ++ optionalParams).map(extractItem)
-    val fields = (requiredParams ++ optionalParams).map(_.scalaName)
-
-    q"for (..$enumeratorsnel) yield $scalaTerm(..$fields)"
-  }
-
-  def applicativeDecoder: Term.Apply = {
-    def extractItem(item: StructureItem): Term = {
-      q"o.get[${item.structureType}](${item.name})"
-    }
-    val fields = (requiredParams ++ optionalParams).map(extractItem)
-
-    q"(..$fields).mapN($scalaTerm.apply _)"
-  }
-
-  def singleFieldDecoder(item: StructureItem): Term.Apply = {
-    q"o.get[${item.structureType}](${item.name}).map($scalaTerm.apply _)"
-  }
-
-  def decoderInstance: Term = {
-    if ((requiredParams ++ optionalParams).size == 1)
-      singleFieldDecoder((requiredParams ++ optionalParams).head)
-    else if ((requiredParams ++ optionalParams).size >= 23)
-      monadicDecoder
-    else
-      applicativeDecoder
-  }
-
-  def encoderInstance: Term.Apply = {
-    val fields = (requiredParams ++ optionalParams).map(i => q"${i.name} -> o.${i.scalaName}.asJson")
-    q"Json.obj(..$fields)"
-  }
+  val scalaType = Type.Select(Term.Name(typePackage), Type.Name(typeName))
+  val scalaObjectName = Term.Select(Term.Name(typePackage), Term.Name(typeName))
 
   def decoder: Defn.Val = {
+    def monadicDecoder: Term.ForYield = {
+      def extractItem(item: StructureField): Enumerator.Generator = {
+        enumerator"${p"${item.scalaName}"} <- o.get[${item.scalaType}](${item.scalaLiteral})"
+      }
+
+      val enumeratorsnel = params.map(extractItem)
+      val fields = params.map(_.scalaName)
+
+      q"for (..$enumeratorsnel) yield $scalaObjectName(..$fields)"
+    }
+
+    def applicativeDecoder: Term.Apply = {
+      def extractItem(item: StructureField): Term = {
+        q"o.get[${item.scalaType}](${item.scalaLiteral})"
+      }
+      val fields = params.map(extractItem)
+
+      q"(..$fields).mapN($scalaObjectName.apply _)"
+    }
+
+    def singleFieldDecoder(item: StructureField): Term.Apply = {
+      q"o.get[${item.scalaType}](${item.scalaLiteral}).map($scalaObjectName.apply _)"
+    }
+
+    def decoderInstance: Term = {
+      if (params.size == 1)
+        singleFieldDecoder(params.head)
+      else if (params.size >= 23)
+        monadicDecoder
+      else
+        applicativeDecoder
+    }
+
+    val decoderName = Pat.Var(Term.Name(typeName + "Decoder"))
+
     q"final implicit val $decoderName: io.circe.Decoder[$scalaType] = io.circe.Decoder.instance { o => $decoderInstance }"
   }
 
   def encoder: Defn.Val = {
+    val encoderInstance: Term.Apply = {
+      val fields = params.map(i => q"${i.scalaLiteral} -> o.${i.scalaName}.asJson")
+      q"Json.obj(..$fields)"
+    }
+
+    val encoderName = Pat.Var(Term.Name(typeName + "Encoder"))
+
     q"final implicit val $encoderName: io.circe.Encoder[$scalaType] = io.circe.Encoder.instance { o => $encoderInstance }"
   }
 
   def definition: Defn = {
-    q"final case class ${Type.Name(scalaTerm.name.value)}(..${(requiredParams ++ optionalParams).map(_.param)})"
+    q"final case class ${Type.Name(typeName)}(..${params.map(_.scalaMethodParam)})"
   }
 }

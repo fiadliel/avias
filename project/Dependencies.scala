@@ -5,6 +5,15 @@ object Dependencies {
   val CirceVersion = "0.9.1"
   val Http4sVersion = "0.18.0"
   val TsecVersion = "0.0.1-M7"
+  val monocleVersion = "1.5.0-cats"
+
+  val core = Seq(
+  libraryDependencies ++= Seq(
+  "com.github.julien-truffaut" %%  "monocle-core"  % monocleVersion,
+  "com.github.julien-truffaut" %%  "monocle-macro" % monocleVersion,
+  "com.github.julien-truffaut" %%  "monocle-law"   % monocleVersion % "test"
+    )
+  )
 
   val circe = Seq(
     libraryDependencies ++= Seq(

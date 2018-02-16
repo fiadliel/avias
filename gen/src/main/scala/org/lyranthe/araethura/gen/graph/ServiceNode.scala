@@ -3,55 +3,10 @@ package org.lyranthe.araethura.gen.graph
 import org.lyranthe.araethura.gen.parse.service.HttpOperation
 import quiver.Graph
 
-import scala.meta._
+import scala.meta.{Term, Type}
+import scala.meta.quasiquotes._
 
 sealed trait ServiceNode extends Product with Serializable
-
-object ServiceNode {
-  def blobNode(name: String, documentation: Option[String]): ServiceNode =
-    BlobNode(name, documentation)
-  def booleanNode(name: String, documentation: Option[String]): ServiceNode =
-    BooleanNode(name, documentation)
-  def doubleNode(name: String, documentation: Option[String]): ServiceNode =
-    DoubleNode(name, documentation)
-  def floatNode(name: String, documentation: Option[String]): ServiceNode =
-    FloatNode(name, documentation)
-  def integerNode(name: String,
-                  documentation: Option[String],
-                  min: Option[Int],
-                  max: Option[Int]): ServiceNode =
-    IntegerNode(name, documentation, min, max)
-  def listNode(name: String,
-               documentation: Option[String],
-               min: Option[Int]): ServiceNode =
-    ListNode(name, documentation, min)
-  def longNode(name: String,
-               documentation: Option[String],
-               min: Option[Long],
-               max: Option[Long]): ServiceNode =
-    LongNode(name, documentation, min, max)
-  def mapNode(name: String, documentation: Option[String]): ServiceNode =
-    MapNode(name, documentation)
-
-  def operationNode(name: String,
-                    http: HttpOperation,
-                    documentation: Option[String]): ServiceNode = {
-    OperationNode(name, http, documentation)
-  }
-
-  def stringNode(name: String,
-                 documentation: Option[String],
-                 enum: Option[List[String]],
-                 max: Option[Int]): ServiceNode =
-    StringNode(name, documentation, enum.map(_.toSet), max)
-
-  def structureNode(name: String,
-                    documentation: Option[String],
-                    hasZeroMembers: Boolean): ServiceNode =
-    StructureNode(name, hasZeroMembers, documentation)
-  def timestampNode(name: String, documentation: Option[String]): ServiceNode =
-    TimestampNode(name, documentation)
-}
 
 case class OperationNode(item: String,
                          http: HttpOperation,
@@ -61,35 +16,35 @@ case class OperationNode(item: String,
 trait ShapeNode extends ServiceNode {
   def name: String
   def documentation: Option[String]
-  def getType(modelPackage: Term.Ref,
+  def getType(modelPackage: String,
               graph: Graph[ServiceNode, NodeName, EdgeLabel]): Type
 }
 
 case class BlobNode(name: String, documentation: Option[String])
     extends ShapeNode {
-  def getType(modelPackage: Term.Ref,
-              graph: Graph[ServiceNode, NodeName, EdgeLabel]) =
+  def getType(modelPackage: String,
+              graph: Graph[ServiceNode, NodeName, EdgeLabel]): Type  =
     t"scala.Array[scala.Byte]"
 }
 
 case class BooleanNode(name: String, documentation: Option[String])
     extends ShapeNode {
-  def getType(modelPackage: Term.Ref,
-              graph: Graph[ServiceNode, NodeName, EdgeLabel]) =
+  def getType(modelPackage: String,
+              graph: Graph[ServiceNode, NodeName, EdgeLabel]): Type =
     t"scala.Boolean"
 }
 
 case class DoubleNode(name: String, documentation: Option[String])
     extends ShapeNode {
-  def getType(modelPackage: Term.Ref,
-              graph: Graph[ServiceNode, NodeName, EdgeLabel]) =
+  def getType(modelPackage: String,
+              graph: Graph[ServiceNode, NodeName, EdgeLabel]): Type =
     t"scala.Double"
 }
 
 case class FloatNode(name: String, documentation: Option[String])
     extends ShapeNode {
-  def getType(modelPackage: Term.Ref,
-              graph: Graph[ServiceNode, NodeName, EdgeLabel]) =
+  def getType(modelPackage: String,
+              graph: Graph[ServiceNode, NodeName, EdgeLabel]): Type =
     t"scala.Float"
 }
 
@@ -97,13 +52,9 @@ case class StructureNode(name: String,
                          hasZeroMembers: Boolean,
                          documentation: Option[String])
     extends ShapeNode {
-  def getType(modelPackage: Term.Ref,
-              graph: Graph[ServiceNode, NodeName, EdgeLabel]) = {
-    if (hasZeroMembers)
-      t"scala.Unit"
-    else
-      Type.Select(modelPackage, Type.Name(name))
-  }
+  def getType(modelPackage: String,
+              graph: Graph[ServiceNode, NodeName, EdgeLabel]): Type =
+    t"${Term.Name(modelPackage)}.${Type.Name(name)}"
 }
 
 case class IntegerNode(name: String,
@@ -111,8 +62,8 @@ case class IntegerNode(name: String,
                        min: Option[Int],
                        max: Option[Int])
     extends ShapeNode {
-  def getType(modelPackage: Term.Ref,
-              graph: Graph[ServiceNode, NodeName, EdgeLabel]) =
+  def getType(modelPackage: String,
+              graph: Graph[ServiceNode, NodeName, EdgeLabel]): Type =
     t"scala.Int"
 }
 
@@ -120,12 +71,12 @@ case class ListNode(name: String,
                     documentation: Option[String],
                     min: Option[Int])
     extends ShapeNode {
-  def getType(modelPackage: Term.Ref,
-              graph: Graph[ServiceNode, NodeName, EdgeLabel]) = {
+  def getType(modelPackage: String,
+              graph: Graph[ServiceNode, NodeName, EdgeLabel]): Type = {
     graph.outs(this).collectFirst {
       case (ShapeForList, s: ShapeNode) =>
-        Type.Apply(Type.Name("scala.List"),
-                   List(s.getType(modelPackage, graph)))
+        val listType = s.getType(modelPackage, graph)
+        t"scala.List[$listType]"
     } getOrElse sys.error(
       "Should have output type for a list node: " + name + " " + graph.outs(
         this))
@@ -136,15 +87,15 @@ case class LongNode(name: String,
                     min: Option[Long],
                     max: Option[Long])
     extends ShapeNode {
-  def getType(modelPackage: Term.Ref,
-              graph: Graph[ServiceNode, NodeName, EdgeLabel]) =
+  def getType(modelPackage: String,
+              graph: Graph[ServiceNode, NodeName, EdgeLabel]): Type =
     t"scala.Long"
 }
 
 case class MapNode(name: String, documentation: Option[String])
     extends ShapeNode {
-  def getType(modelPackage: Term.Ref,
-              graph: Graph[ServiceNode, NodeName, EdgeLabel]) = {
+  def getType(modelPackage: String,
+              graph: Graph[ServiceNode, NodeName, EdgeLabel]): Type = {
     val outs = graph.outs(this)
 
     val k = outs.collectFirst {
@@ -169,14 +120,14 @@ case class StringNode(name: String,
                       enum: Option[Set[String]],
                       max: Option[Int])
     extends ShapeNode {
-  def getType(modelPackage: Term.Ref,
-              graph: Graph[ServiceNode, NodeName, EdgeLabel]) =
+  def getType(modelPackage: String,
+              graph: Graph[ServiceNode, NodeName, EdgeLabel]): Type =
     t"java.lang.String"
 }
 
 case class TimestampNode(name: String, documentation: Option[String])
     extends ShapeNode {
-  def getType(modelPackage: Term.Ref,
-              graph: Graph[ServiceNode, NodeName, EdgeLabel]) =
+  def getType(modelPackage: String,
+              graph: Graph[ServiceNode, NodeName, EdgeLabel]): Type =
     t"java.time.Instant"
 }

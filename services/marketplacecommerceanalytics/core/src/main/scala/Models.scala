@@ -1,7 +1,6 @@
 package org.lyranthe.araethura.marketplacecommerceanalytics.models
-import org.lyranthe.araethura.marketplacecommerceanalytics.models
-final case class GenerateDataSetRequest(dataSetPublicationDate: java.time.Instant, roleNameArn: java.lang.String, snsTopicArn: java.lang.String, destinationS3BucketName: java.lang.String, dataSetType: java.lang.String, destinationS3Prefix: scala.Option[java.lang.String] = None, customerDefinedValues: scala.Option[scala.collection.immutable.Map[java.lang.String, java.lang.String]] = None)
-final case class StartSupportDataExportRequest(dataSetType: java.lang.String, roleNameArn: java.lang.String, snsTopicArn: java.lang.String, destinationS3BucketName: java.lang.String, fromDate: java.time.Instant, destinationS3Prefix: scala.Option[java.lang.String] = None, customerDefinedValues: scala.Option[scala.collection.immutable.Map[java.lang.String, java.lang.String]] = None)
-final case class MarketplaceCommerceAnalyticsException(message: scala.Option[java.lang.String] = None)
-final case class StartSupportDataExportResult(dataSetRequestId: scala.Option[java.lang.String] = None)
-final case class GenerateDataSetResult(dataSetRequestId: scala.Option[java.lang.String] = None)
+final case class GenerateDataSetRequest(dataSetPublicationDate: java.time.Instant, roleNameArn: java.lang.String, snsTopicArn: java.lang.String, destinationS3BucketName: java.lang.String, dataSetType: java.lang.String, destinationS3Prefix: scala.Option[java.lang.String] = scala.None, customerDefinedValues: scala.Option[scala.collection.immutable.Map[java.lang.String, java.lang.String]] = scala.None)
+final case class StartSupportDataExportRequest(dataSetType: java.lang.String, roleNameArn: java.lang.String, snsTopicArn: java.lang.String, destinationS3BucketName: java.lang.String, fromDate: java.time.Instant, destinationS3Prefix: scala.Option[java.lang.String] = scala.None, customerDefinedValues: scala.Option[scala.collection.immutable.Map[java.lang.String, java.lang.String]] = scala.None)
+final case class MarketplaceCommerceAnalyticsException(message: scala.Option[java.lang.String] = scala.None)
+final case class StartSupportDataExportResult(dataSetRequestId: scala.Option[java.lang.String] = scala.None)
+final case class GenerateDataSetResult(dataSetRequestId: scala.Option[java.lang.String] = scala.None)

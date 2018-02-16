@@ -7,73 +7,33 @@ import quiver.{Context, Graph}
 import scala.meta.{Init, Lit, Name, Pkg, Stat, Term, Type}
 import scala.meta.quasiquotes._
 
-case class TraitInput(typ: Type, elideInput: Boolean) {
-  def innerType: Type = {
-    typ
-  }
+class TraitMethod(operation: Lit.String,
+                  scalaName: Term.Name,
+                  http: HttpOperation,
+                  awsDataType: Type,
+                  commonHttp4sPackage: Term,
+                  input: Option[Structure],
+                  output: Option[Structure],
+                  errors: List[Structure]) {
+  def outputType: Type =
+    output.filter(_.params.nonEmpty).map(_.scalaType).getOrElse(Type.Name("scala.Unit"))
 
-  def traitParam: Option[Term.Param] = {
-    if (elideInput)
-      None
-    else
-      Some(param"input: $innerType")
-  }
+  val paramss: List[List[Term.Param]] =
+    List(input.filter(_.params.nonEmpty).map(i => param"input: ${i.scalaType}").toList).filter(_.nonEmpty)
 
-  def name = {
-    q"input"
-  }
-}
+  def methodResultType(effectType: String): Type =
+    Type.Apply(Type.Name(effectType), List(outputType))
 
-case class TraitOutput(typ: Type) {
-  def innerType = typ
-
-  def traitResult(effectType: Type) = {
-    Type.Apply(effectType, List(typ))
-  }
-}
-
-case class TraitError(typ: Type) {
-  def innerType = typ
-}
-
-class Method(operation: Lit.String,
-             scalaName: Term.Name,
-             http: HttpOperation,
-             awsDataType: Type,
-             commonHttp4sPackage: Term,
-             input: Option[TraitInput],
-             requiredInputParams: List[StructureItem],
-             output: Option[TraitOutput],
-             errors: List[TraitError]) {
-
-  println("Method " + operation)
-  println("Required Input Params: " + requiredInputParams)
-
-  def paramss(effectType: Type): List[List[Term.Param]] =
-    List(input.flatMap(_.traitParam).toList)
-      .filter(_.nonEmpty)
-
-  def requiredParamss(effectType: Type): Option[List[Term.Param]] =
-    Option(requiredInputParams.map(_.param)).filter(_.nonEmpty)
-
-  def innerType: Type =
-    output.map(_.innerType).getOrElse(t"Unit")
-
-  def declType(effectType: Type): Type =
-    Type.Apply(effectType, List(innerType))
-
-  def definition(effectType: Type, body: Option[Term]): Stat = {
+  def definition(effectType: String, body: Option[Term]): Stat = {
     body match {
       case None =>
-          q"def $scalaName(...${paramss(effectType)}): ${declType(effectType)}"
+          q"def $scalaName(...$paramss): ${methodResultType(effectType)}"
       case Some(b) =>
-        q"override def $scalaName(...${paramss(effectType)}): ${declType(
-          effectType)} = $b"
+        q"override def $scalaName(...$paramss): ${methodResultType(effectType)} = $b"
     }
   }
 
   def http4sImplementation: Stat = {
-    val baseTargs: List[Type] = List(t"F", innerType)
     val baseArgs: List[Term] = List(q"client",
                                     q"awsData",
                                     q"ServiceType",
@@ -84,23 +44,24 @@ class Method(operation: Lit.String,
 
     input match {
       case Some(i) =>
-        val targs: List[Type] = baseTargs :+ i.innerType
-        val args: List[Term] = {
-          if (i.elideInput)
-            baseArgs :+ q"()"
-          else
-            baseArgs :+ i.name
-        }
+        val args = baseArgs ++ input.map({ i =>
+                  if (i.params.isEmpty)
+                    q"()"
+                  else
+                    q"input"
+                }).toList
+
+        val t = if (i.params.isEmpty) t"scala.Unit" else i.scalaType
 
         definition(
-          t"F",
+          "F",
           Some(
-            q"$commonHttp4sPackage.ClientUtils.doRequest[..$targs](..$args)"))
+            q"$commonHttp4sPackage.ClientUtils.doRequest[F, $outputType, $t](..$args)"))
       case None =>
         definition(
-          t"F",
+          "F",
           Some(
-            q"$commonHttp4sPackage.ClientUtils.doRequestWithoutBody[..$baseTargs](..$baseArgs)"))
+            q"$commonHttp4sPackage.ClientUtils.doRequestWithoutBody[F, $outputType](..$baseArgs)"))
     }
   }
 }
@@ -110,14 +71,14 @@ case class Trait(servicePackageName: Term.Ref,
                  http4sImplName: Type.Name,
                  endpointPrefix: String,
                  targetPrefix: Option[String],
-                 methods: List[Method]) {
+                 methods: List[TraitMethod]) {
   val http4sPackageName = q"$servicePackageName.http4s"
 
   def definition: Pkg = {
     q"""
 package $servicePackageName {
   trait $traitName[F[_]] {
-    ..${methods.flatMap(_.definition(t"F", None))}
+    ..${methods.map(_.definition("F", None))}
   }
 }
      """
@@ -140,7 +101,7 @@ package $http4sPackageName {
     private[this] final val ServiceType: String = $serviceType
     private[this] final val ServiceAndPrefix: Option[String] = $serviceAndPrefix
 
-    ..${methods.flatMap(_.http4sImplementation)}
+    ..${methods.map(_.http4sImplementation)}
   }
 }
 """
@@ -160,9 +121,10 @@ object Trait {
     val serviceTraitName = Term.Name(serviceName.value.replace("-", "_"))
     val servicePackageName = q"$packageName.$serviceTraitName"
     val commonPackageName = q"$packageName.common"
+    val modelsPackageName = q"$packageName.models"
     val commonHttp4sPackageName = q"$commonPackageName.http4s"
 
-    val methods: List[Method] = graph.contexts.collect({
+    val methods: List[TraitMethod] = graph.contexts.collect({
       case Context(_, OperationNode(methodName, http, doc), label, out) =>
         def scalaName: Term.Name = {
           val lowered = methodName.takeWhile(_.isUpper).toLowerCase
@@ -170,41 +132,30 @@ object Trait {
           Term.Name(lowered + afterLowered)
         }
 
-        val input: Option[TraitInput] = out.collectFirst {
+        val input: Option[Structure] = out.collectFirst {
           case (InputForOperation, n: ShapeNode) =>
-            val jsonType = n.getType(Term.Name("models"), graph)
+            n.name
+        } flatMap structures.getByName
 
-            val elideInput = jsonType.toString() == "scala.Unit"
-
-            TraitInput(jsonType, elideInput)
-        }
-
-        val output: Option[Type] = out.collectFirst {
+        val output: Option[Structure] = out.collectFirst {
           case (OutputForOperation, n: ShapeNode) =>
-            n.getType(Term.Name("models"), graph)
-        }
+            n.name
+        } flatMap structures.getByName
 
-        val errors: List[Type] = out.collect {
+        val errors: List[Structure] = out.collect {
           case (ErrorForOperation, n: ShapeNode) =>
-            n.getType(Term.Name("models"), graph)
-        } toList
+            n.name
+        }.toList flatMap structures.getByName
 
-        println(methodName)
-        println("Type: " + input.map(_.innerType.toString()))
-        println("All required structures: " + structures.items.map(_.name).mkString(","))
-        println("Structures: " + input.flatMap(i => structures.itemLookup.get(i.innerType.toString()).map(_.requiredParams)).mkString(","))
-        println("Input: " + input)
-
-        new Method(
+        new TraitMethod(
           Lit.String(methodName),
           scalaName,
           http,
           Type.Select(commonPackageName, t"AwsData"),
           commonHttp4sPackageName,
           input,
-          input.map(_.innerType.toString()).flatMap(structures.itemLookup.get(_)).toList.flatMap(_.requiredParams),
-          output.map(TraitOutput.apply),
-          errors.map(TraitError.apply)
+          output,
+          errors
         )
     })(collection.breakOut)
 

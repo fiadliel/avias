@@ -82,34 +82,6 @@ object GenAws extends StreamApp[IO] {
       d => F.delay(d.close()))
   }
 
-  val wantedServices = Set(
-    "ec2",
-    "ecs",
-    "kms",
-    "s3",
-    "iam",
-    "autoscaling",
-    "cloudformation",
-    "cloudtrail",
-    "cloudwatch",
-    "codedeploy",
-    "codebuild",
-    "dynamodb",
-    "ecr",
-    "elasticache",
-    "elb",
-    "elbv2",
-    "es",
-    "kinesis",
-    "lambda",
-    "rds",
-    "route53",
-    "sns",
-    "sqs",
-    "stepfunctions",
-    "xray"
-  )
-
   def getServiceDirs[F[_]](parent: Path, defaultServiceName: String)(
       implicit F: Sync[F]): Stream[F, (String, Path)] = {
     if (parent.toFile.isDirectory) {

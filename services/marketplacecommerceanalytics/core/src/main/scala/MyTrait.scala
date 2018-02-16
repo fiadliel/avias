@@ -1,5 +1,5 @@
 package org.lyranthe.araethura.marketplacecommerceanalytics
 trait Amazonmarketplacecommerceanalytics[F[_]] {
-  def startSupportDataExport(input: models.StartSupportDataExportRequest): F[models.StartSupportDataExportResult]
-  def generateDataSet(input: models.GenerateDataSetRequest): F[models.GenerateDataSetResult]
+  def startSupportDataExport(input: org.lyranthe.araethura.marketplacecommerceanalytics.models.StartSupportDataExportRequest): F[org.lyranthe.araethura.marketplacecommerceanalytics.models.StartSupportDataExportResult]
+  def generateDataSet(input: org.lyranthe.araethura.marketplacecommerceanalytics.models.GenerateDataSetRequest): F[org.lyranthe.araethura.marketplacecommerceanalytics.models.GenerateDataSetResult]
 }

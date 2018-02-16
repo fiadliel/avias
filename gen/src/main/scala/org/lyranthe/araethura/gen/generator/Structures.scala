@@ -3,14 +3,14 @@ package org.lyranthe.araethura.gen.generator
 import org.lyranthe.araethura.gen.graph._
 import quiver.{Context, Graph}
 
-import scala.meta.{Lit, Term}
+import scala.meta.Term
 import scala.meta.quasiquotes._
 
 case class Structures(servicePackageName: Term.Select,
                       items: List[Structure]) {
-  def itemLookup: Map[String, Structure] = {
-    items.map { item => item.name -> item }.toMap
-  }
+  private val map = items.groupBy(_.typeName).map { case (k, v) => k -> v.head }
+
+  def getByName(typeName: String): Option[Structure] = map.get(typeName)
 
   def circeImplicits = q"""
 package $servicePackageName {
@@ -20,7 +20,6 @@ package $servicePackageName {
   import io.circe.syntax._
 
   object circe extends org.lyranthe.araethura.common.DefaultCodecs {
-
     ..${items.map(_.encoder)}
     ..${items.map(_.decoder)}
   }
@@ -30,9 +29,6 @@ package $servicePackageName {
   def modelDefinitions =
     q"""
        package $servicePackageName.models {
-
-         import $servicePackageName.models
-
          ..${items.map(_.definition)}
        }
      """
@@ -45,6 +41,7 @@ object Structures {
     val serviceTraitName = Term.Name(serviceName.value.replace("-", "_"))
     val servicePackageName = Term.Select(packageName, serviceTraitName)
     val commonPackageName = Term.Select(packageName, Term.Name("common"))
+    val modelsPackageName = Term.Select(servicePackageName, Term.Name("models"))
     val circePackageName = Term.Select(servicePackageName, Term.Name("circe"))
 
     val structures = graph.contexts
@@ -54,22 +51,18 @@ object Structures {
 
           val requiredParams = out.collect {
             case (ItemForStructure(item, true), v: ShapeNode) =>
-              val tpe = v.getType(Term.Name("models"), graph)
-              StructureItem(Lit.String(item), tpe)
+              val tpe = v.getType(modelsPackageName.toString, graph)
+              StructureField(item, tpe, false)
           }
 
           val optionalParams = out.collect {
             case (ItemForStructure(item, false), v: ShapeNode) =>
-              val tpe = v.getType(Term.Name("models"), graph)
-              StructureItem(Lit.String(item), t"scala.Option[$tpe]")
+              val tpe = v.getType(modelsPackageName.toString, graph)
+              StructureField(item, tpe, true)
           }
 
-          if ((requiredParams ++ optionalParams).isEmpty)
-            ObjectStructure(q"models.${label.scalaTerm}", isError)
-          else
-            ClassStructure(q"models.${label.scalaTerm}",
-                           isError,
-              requiredParams.toList, optionalParams.toList)
+          val allParams = (requiredParams ++ optionalParams).toList
+          Structure(modelsPackageName.toString, label.term, isError, allParams)
     }).toList
 
     Structures(servicePackageName, structures)

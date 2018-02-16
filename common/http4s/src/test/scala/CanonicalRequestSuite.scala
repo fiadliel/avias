@@ -2,10 +2,7 @@ package org.lyranthe.araethura.common.http4s
 
 import cats.effect.IO
 import org.http4s._
-import org.scalacheck._
 import org.scalacheck.Prop._
-import tsec.common._
-import tsec.mac.imports._
 import tsec.messagedigests.imports._
 
 object CanonicalRequestSuite extends PureTestSuite {

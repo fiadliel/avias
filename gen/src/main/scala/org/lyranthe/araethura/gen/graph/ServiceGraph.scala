@@ -1,51 +1,50 @@
 package org.lyranthe.araethura.gen.graph
 
+import cats.implicits._
 import org.lyranthe.araethura.gen.parse.service._
 import quiver._
 
-import scala.meta._
-
 object ServiceGraph {
   def apply(service: Service): Graph[ServiceNode, NodeName, EdgeLabel] = {
-    val operationNodes: Map[String, LNode[ServiceNode, NodeName]] =
+    val operationNodes =
       service.operations.map {
         case (k, v) =>
-          k -> LNode(ServiceNode.operationNode(v.name, v.http, v.documentation),
-                     NodeName(Term.Name(k)))
+          k -> LNode(OperationNode(v.name, v.http, v.documentation),
+                     NodeName(k))
       }
 
-    val shapeNodes: Map[String, LNode[ServiceNode, NodeName]] =
+    val shapeNodes =
       service.shapes.map {
         case (k, v) =>
           val n = v match {
             case BlobServiceShape(documentation) =>
-              ServiceNode.blobNode(k, documentation)
+              BlobNode(k, documentation)
             case BooleanServiceShape(documentation) =>
-              ServiceNode.booleanNode(k, documentation)
+              BooleanNode(k, documentation)
             case DoubleServiceShape(documentation) =>
-              ServiceNode.doubleNode(k, documentation)
+              DoubleNode(k, documentation)
             case FloatServiceShape(documentation) =>
-              ServiceNode.floatNode(k, documentation)
+              FloatNode(k, documentation)
             case IntegerServiceShape(documentation, min, max) =>
-              ServiceNode.integerNode(k, documentation, min, max)
+              IntegerNode(k, documentation, min, max)
             case ListServiceShape(documentation, shape, min) =>
-              ServiceNode.listNode(k, documentation, min)
+              ListNode(k, documentation, min)
             case LongServiceShape(documentation, min, max) =>
-              ServiceNode.longNode(k, documentation, min, max)
+              LongNode(k, documentation, min, max)
             case MapServiceShape(documentation, kShape, vShape) =>
-              ServiceNode.mapNode(k, documentation)
+              MapNode(k, documentation)
             case StringServiceShape(documentation, enum, max) =>
-              ServiceNode.stringNode(k, documentation, enum, max)
+              StringNode(k, documentation, enum.map(_.toSet), max)
             case StructureServiceShape(documentation, required, members) =>
-              ServiceNode.structureNode(k, documentation, members.isEmpty)
+              StructureNode(k, members.isEmpty, documentation)
             case TimestampServiceShape(documentation) =>
-              ServiceNode.timestampNode(k, documentation)
+              TimestampNode(k, documentation)
           }
-          k -> LNode(n, NodeName(Term.Name(k)))
+          k -> LNode(n, NodeName(k))
       }
 
-    val nodes: Seq[LNode[ServiceNode, NodeName]] =
-      (operationNodes.valuesIterator ++ shapeNodes.valuesIterator).toSeq
+    val nodes =
+      (operationNodes.valuesIterator ++ shapeNodes.valuesIterator).toList
 
     val operationEdges = service.operations.flatMap {
       case (k, v) =>
@@ -54,14 +53,14 @@ object ServiceGraph {
         v.input
           .map { i =>
 
-            LEdge(src, shapeNodes(i.shape).vertex, EdgeLabel.inputForOperation) }
+            LEdge(src, shapeNodes(i.shape).vertex, InputForOperation) }
           .toSeq ++
           v.output
             .map(
               o =>
                 LEdge(src,
                       shapeNodes(o.shape).vertex,
-                      EdgeLabel.outputForOperation))
+                  OutputForOperation))
             .toSeq ++
           v.errors
             .getOrElse(List.empty)
@@ -69,10 +68,10 @@ object ServiceGraph {
               e =>
                 LEdge(src,
                       shapeNodes(e.shape).vertex,
-                      EdgeLabel.errorForOperation))
-    } toSeq
+                  ErrorForOperation))
+    } toList
 
-    val shapeEdges: Seq[LEdge[ServiceNode, EdgeLabel]] =
+    val shapeEdges =
       service.shapes.flatMap {
         case (k, BlobServiceShape(_)) =>
           Seq.empty
@@ -86,14 +85,14 @@ object ServiceGraph {
           Seq.empty
         case (k, ListServiceShape(_, a, b)) =>
           val src = shapeNodes(k).vertex
-          Seq(LEdge(src, shapeNodes(a.shape).vertex, EdgeLabel.shapeForList))
+          Seq(LEdge(src, shapeNodes(a.shape).vertex, ShapeForList))
         case (k, LongServiceShape(_, _, _)) =>
           Seq.empty
         case (k, MapServiceShape(_, kShape, vShape)) =>
           val src = shapeNodes(k).vertex
           Seq(
-            LEdge(src, shapeNodes(kShape.shape).vertex, EdgeLabel.keyForMap),
-            LEdge(src, shapeNodes(vShape.shape).vertex, EdgeLabel.valueForMap))
+            LEdge(src, shapeNodes(kShape.shape).vertex, KeyForMap),
+            LEdge(src, shapeNodes(vShape.shape).vertex, ValueForMap))
         case (k, StringServiceShape(_, _, _)) =>
           Seq.empty
         case (k, StructureServiceShape(_, required, members)) =>
@@ -105,7 +104,7 @@ object ServiceGraph {
               case (k, v) =>
                 LEdge(src,
                       shapeNodes(v.shape).vertex,
-                      EdgeLabel.itemForStructure(k, required = true))
+                      ItemForStructure(k, required = true))
             }
           val notreq = members
             .filterKeys(k => !reqKeys.contains(k.repr))
@@ -113,17 +112,17 @@ object ServiceGraph {
               case (k, v) =>
                 LEdge(src,
                       shapeNodes(v.shape).vertex,
-                      EdgeLabel.itemForStructure(k, required = false))
+                      ItemForStructure(k, required = false))
             }
 
           req ++ notreq
 
         case (k, TimestampServiceShape(_)) =>
           Seq.empty
-      } toSeq
+      } toList
 
     val edges = operationEdges ++ shapeEdges
 
-    quiver.mkGraph(nodes, edges)
+    quiver.mkGraph(nodes.asInstanceOf[List[LNode[ServiceNode, NodeName]]], edges.asInstanceOf[List[LEdge[ServiceNode, EdgeLabel]]])
   }
 }
