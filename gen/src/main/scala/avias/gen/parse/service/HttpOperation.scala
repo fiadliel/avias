@@ -1,3 +1,3 @@
-package org.lyranthe.araethura.gen.parse.service
+package avias.gen.parse.service
 
 case class HttpOperation(method: String, requestUri: String)

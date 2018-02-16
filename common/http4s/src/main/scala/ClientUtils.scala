@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.common.http4s
+package avias.common.http4s
 
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -7,7 +7,7 @@ import cats._
 import cats.effect.Sync
 import cats.implicits._
 import io.circe.{Decoder, Encoder}
-import org.lyranthe.araethura.common._
+import avias.common._
 import org.http4s.{Header, Method, Request, Uri}
 import org.http4s.client.Client
 import tsec.common._
@@ -16,7 +16,7 @@ import tsec.messagedigests.imports._
 
 import scala.language.higherKinds
 
-private[araethura] object ClientUtils {
+private[avias] object ClientUtils {
   implicit def entityEncoder[F[_]: Applicative, A: Encoder] =
     org.http4s.circe.jsonEncoderOf[F, A] //.withContentType(jsonContentType)
   implicit def entityDecoder[F[_]: Sync, A: Decoder] =
@@ -69,7 +69,6 @@ private[araethura] object ClientUtils {
                                         awsData: AwsData[F],
                                         serviceType: String)(implicit F: Sync[F]): F[O] = {
     for {
-      sessionToken <- awsData.sessionToken
       canonicalRequest <- CanonicalRequest.fromRequest[F, SHA256](request)
       credentialScope = CredentialScope(currentTime, serviceType, awsData.region)
       signingKey <- mkSigningKey[F](currentTime, serviceType, awsData)
@@ -77,7 +76,7 @@ private[araethura] object ClientUtils {
       stringSigned <- JCAMac
         .sign(stringToSign.getBytes(), signingKey)
         .map(_.toHexString)
-      sessionHeader = sessionToken.map { t =>
+      sessionHeader = awsData.sessionToken.map { t =>
         Header("X-Amz-Security-Token", t)
       }
       auth = sessionHeader.toList ::: List(

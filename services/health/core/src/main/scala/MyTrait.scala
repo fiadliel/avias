@@ -1,9 +1,9 @@
-package org.lyranthe.araethura.health
+package avias.health
 trait Amazonhealth[F[_]] {
-  def describeEventDetails(input: org.lyranthe.araethura.health.models.DescribeEventDetailsRequest): F[org.lyranthe.araethura.health.models.DescribeEventDetailsResponse]
-  def describeEntityAggregates(input: org.lyranthe.araethura.health.models.DescribeEntityAggregatesRequest): F[org.lyranthe.araethura.health.models.DescribeEntityAggregatesResponse]
-  def describeEventAggregates(input: org.lyranthe.araethura.health.models.DescribeEventAggregatesRequest): F[org.lyranthe.araethura.health.models.DescribeEventAggregatesResponse]
-  def describeAffectedEntities(input: org.lyranthe.araethura.health.models.DescribeAffectedEntitiesRequest): F[org.lyranthe.araethura.health.models.DescribeAffectedEntitiesResponse]
-  def describeEventTypes(input: org.lyranthe.araethura.health.models.DescribeEventTypesRequest): F[org.lyranthe.araethura.health.models.DescribeEventTypesResponse]
-  def describeEvents(input: org.lyranthe.araethura.health.models.DescribeEventsRequest): F[org.lyranthe.araethura.health.models.DescribeEventsResponse]
+  def describeEventDetails(input: avias.health.models.DescribeEventDetailsRequest): F[avias.health.models.DescribeEventDetailsResponse]
+  def describeEntityAggregates(input: avias.health.models.DescribeEntityAggregatesRequest): F[avias.health.models.DescribeEntityAggregatesResponse]
+  def describeEventAggregates(input: avias.health.models.DescribeEventAggregatesRequest): F[avias.health.models.DescribeEventAggregatesResponse]
+  def describeAffectedEntities(input: avias.health.models.DescribeAffectedEntitiesRequest): F[avias.health.models.DescribeAffectedEntitiesResponse]
+  def describeEventTypes(input: avias.health.models.DescribeEventTypesRequest): F[avias.health.models.DescribeEventTypesResponse]
+  def describeEvents(input: avias.health.models.DescribeEventsRequest): F[avias.health.models.DescribeEventsResponse]
 }

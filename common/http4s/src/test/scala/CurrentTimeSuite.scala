@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.common.http4s
+package avias.common.http4s
 
 import org.scalacheck._
 import org.scalacheck.Prop._

@@ -1,3 +1,3 @@
-package org.lyranthe.araethura.common
+package avias.common
 
-case class AwsData[F[_]](region: String, accessKeyId: String, secretAccessKey: String, sessionToken: F[Option[String]])
+case class AwsData[F[_]](region: String, accessKeyId: String, secretAccessKey: String, sessionToken: Option[String])

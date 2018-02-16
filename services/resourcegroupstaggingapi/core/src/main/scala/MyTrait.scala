@@ -1,8 +1,8 @@
-package org.lyranthe.araethura.resourcegroupstaggingapi
+package avias.resourcegroupstaggingapi
 trait Amazonresourcegroupstaggingapi[F[_]] {
-  def getResources(input: org.lyranthe.araethura.resourcegroupstaggingapi.models.GetResourcesInput): F[org.lyranthe.araethura.resourcegroupstaggingapi.models.GetResourcesOutput]
-  def tagResources(input: org.lyranthe.araethura.resourcegroupstaggingapi.models.TagResourcesInput): F[org.lyranthe.araethura.resourcegroupstaggingapi.models.TagResourcesOutput]
-  def getTagValues(input: org.lyranthe.araethura.resourcegroupstaggingapi.models.GetTagValuesInput): F[org.lyranthe.araethura.resourcegroupstaggingapi.models.GetTagValuesOutput]
-  def getTagKeys(input: org.lyranthe.araethura.resourcegroupstaggingapi.models.GetTagKeysInput): F[org.lyranthe.araethura.resourcegroupstaggingapi.models.GetTagKeysOutput]
-  def untagResources(input: org.lyranthe.araethura.resourcegroupstaggingapi.models.UntagResourcesInput): F[org.lyranthe.araethura.resourcegroupstaggingapi.models.UntagResourcesOutput]
+  def getResources(input: avias.resourcegroupstaggingapi.models.GetResourcesInput): F[avias.resourcegroupstaggingapi.models.GetResourcesOutput]
+  def tagResources(input: avias.resourcegroupstaggingapi.models.TagResourcesInput): F[avias.resourcegroupstaggingapi.models.TagResourcesOutput]
+  def getTagValues(input: avias.resourcegroupstaggingapi.models.GetTagValuesInput): F[avias.resourcegroupstaggingapi.models.GetTagValuesOutput]
+  def getTagKeys(input: avias.resourcegroupstaggingapi.models.GetTagKeysInput): F[avias.resourcegroupstaggingapi.models.GetTagKeysOutput]
+  def untagResources(input: avias.resourcegroupstaggingapi.models.UntagResourcesInput): F[avias.resourcegroupstaggingapi.models.UntagResourcesOutput]
 }

@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.gen.parse.service
+package avias.gen.parse.service
 
 import io.circe._
 import io.circe.generic.auto._

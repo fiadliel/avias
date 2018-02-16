@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.gen.parse.paginators
+package avias.gen.parse.paginators
 
 import java.nio.file.Path
 

@@ -1,5 +1,5 @@
 inThisBuild(List(
-  organization := "org.lyranthe.araethura",
+  organization := "org.lyranthe.avias",
   scalaOrganization := "org.typelevel",
   version := "0.0.1-SNAPSHOT",
   scalaVersion := "2.12.4-bin-typelevel-4",
@@ -14,4 +14,4 @@ enablePlugins(SphinxPlugin, SiteScaladocPlugin, GhpagesPlugin, ScalaUnidocPlugin
 
 siteSubdirName in ScalaUnidoc := "api"
 addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), siteSubdirName in ScalaUnidoc)
-git.remoteRepo := "git@github.com:fiadliel/araethura.git"
+git.remoteRepo := "git@github.com:fiadliel/avias.git"

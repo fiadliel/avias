@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.gen.parse.service
+package avias.gen.parse.service
 
 import cats.implicits._
 import io.circe.Decoder

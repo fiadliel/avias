@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.common.http4s
+package avias.common.http4s
 
 import cats.effect.IO
 import org.http4s._

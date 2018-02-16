@@ -1,7 +1,7 @@
-package org.lyranthe.araethura.dynamodbstreams
+package avias.dynamodbstreams
 trait Amazondynamodbstreams[F[_]] {
-  def getShardIterator(input: org.lyranthe.araethura.dynamodbstreams.models.GetShardIteratorInput): F[org.lyranthe.araethura.dynamodbstreams.models.GetShardIteratorOutput]
-  def listStreams(input: org.lyranthe.araethura.dynamodbstreams.models.ListStreamsInput): F[org.lyranthe.araethura.dynamodbstreams.models.ListStreamsOutput]
-  def describeStream(input: org.lyranthe.araethura.dynamodbstreams.models.DescribeStreamInput): F[org.lyranthe.araethura.dynamodbstreams.models.DescribeStreamOutput]
-  def getRecords(input: org.lyranthe.araethura.dynamodbstreams.models.GetRecordsInput): F[org.lyranthe.araethura.dynamodbstreams.models.GetRecordsOutput]
+  def getShardIterator(input: avias.dynamodbstreams.models.GetShardIteratorInput): F[avias.dynamodbstreams.models.GetShardIteratorOutput]
+  def listStreams(input: avias.dynamodbstreams.models.ListStreamsInput): F[avias.dynamodbstreams.models.ListStreamsOutput]
+  def describeStream(input: avias.dynamodbstreams.models.DescribeStreamInput): F[avias.dynamodbstreams.models.DescribeStreamOutput]
+  def getRecords(input: avias.dynamodbstreams.models.GetRecordsInput): F[avias.dynamodbstreams.models.GetRecordsOutput]
 }

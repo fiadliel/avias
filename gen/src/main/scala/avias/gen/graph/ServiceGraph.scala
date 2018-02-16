@@ -1,7 +1,7 @@
-package org.lyranthe.araethura.gen.graph
+package avias.gen.graph
 
 import cats.implicits._
-import org.lyranthe.araethura.gen.parse.service._
+import avias.gen.parse.service._
 import quiver._
 
 object ServiceGraph {

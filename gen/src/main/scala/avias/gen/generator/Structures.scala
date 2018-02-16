@@ -1,6 +1,6 @@
-package org.lyranthe.araethura.gen.generator
+package avias.gen.generator
 
-import org.lyranthe.araethura.gen.graph._
+import avias.gen.graph._
 import quiver.{Context, Graph}
 
 import scala.meta.Term
@@ -19,7 +19,7 @@ package $servicePackageName {
   import io.circe._
   import io.circe.syntax._
 
-  object circe extends org.lyranthe.araethura.common.DefaultCodecs {
+  object circe extends avias.common.DefaultCodecs {
     ..${items.map(_.encoder)}
     ..${items.map(_.decoder)}
   }

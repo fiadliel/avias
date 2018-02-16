@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.gen.parse.waiters
+package avias.gen.parse.waiters
 
 import java.nio.file.Path
 

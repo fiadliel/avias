@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.gen.graph
+package avias.gen.graph
 
 sealed trait EdgeLabel extends Product with Serializable
 

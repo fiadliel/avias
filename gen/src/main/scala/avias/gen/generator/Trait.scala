@@ -1,7 +1,7 @@
-package org.lyranthe.araethura.gen.generator
+package avias.gen.generator
 
-import org.lyranthe.araethura.gen.graph._
-import org.lyranthe.araethura.gen.parse.service.HttpOperation
+import avias.gen.graph._
+import avias.gen.parse.service.HttpOperation
 import quiver.{Context, Graph}
 
 import scala.meta.{Init, Lit, Name, Pkg, Stat, Term, Type}
@@ -97,7 +97,7 @@ package $http4sPackageName {
   import $servicePackageName.circe._
   import $servicePackageName.models
 
-  class $http4sImplName[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: org.lyranthe.araethura.common.AwsData[F]) extends $ext {
+  class $http4sImplName[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends $ext {
     private[this] final val ServiceType: String = $serviceType
     private[this] final val ServiceAndPrefix: Option[String] = $serviceAndPrefix
 

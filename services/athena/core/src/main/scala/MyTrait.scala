@@ -1,14 +1,14 @@
-package org.lyranthe.araethura.athena
+package avias.athena
 trait Amazonathena[F[_]] {
-  def listQueryExecutions(input: org.lyranthe.araethura.athena.models.ListQueryExecutionsInput): F[org.lyranthe.araethura.athena.models.ListQueryExecutionsOutput]
-  def getQueryExecution(input: org.lyranthe.araethura.athena.models.GetQueryExecutionInput): F[org.lyranthe.araethura.athena.models.GetQueryExecutionOutput]
-  def deleteNamedQuery(input: org.lyranthe.araethura.athena.models.DeleteNamedQueryInput): F[scala.Unit]
-  def batchGetQueryExecution(input: org.lyranthe.araethura.athena.models.BatchGetQueryExecutionInput): F[org.lyranthe.araethura.athena.models.BatchGetQueryExecutionOutput]
-  def getNamedQuery(input: org.lyranthe.araethura.athena.models.GetNamedQueryInput): F[org.lyranthe.araethura.athena.models.GetNamedQueryOutput]
-  def stopQueryExecution(input: org.lyranthe.araethura.athena.models.StopQueryExecutionInput): F[scala.Unit]
-  def getQueryResults(input: org.lyranthe.araethura.athena.models.GetQueryResultsInput): F[org.lyranthe.araethura.athena.models.GetQueryResultsOutput]
-  def createNamedQuery(input: org.lyranthe.araethura.athena.models.CreateNamedQueryInput): F[org.lyranthe.araethura.athena.models.CreateNamedQueryOutput]
-  def startQueryExecution(input: org.lyranthe.araethura.athena.models.StartQueryExecutionInput): F[org.lyranthe.araethura.athena.models.StartQueryExecutionOutput]
-  def batchGetNamedQuery(input: org.lyranthe.araethura.athena.models.BatchGetNamedQueryInput): F[org.lyranthe.araethura.athena.models.BatchGetNamedQueryOutput]
-  def listNamedQueries(input: org.lyranthe.araethura.athena.models.ListNamedQueriesInput): F[org.lyranthe.araethura.athena.models.ListNamedQueriesOutput]
+  def listQueryExecutions(input: avias.athena.models.ListQueryExecutionsInput): F[avias.athena.models.ListQueryExecutionsOutput]
+  def getQueryExecution(input: avias.athena.models.GetQueryExecutionInput): F[avias.athena.models.GetQueryExecutionOutput]
+  def deleteNamedQuery(input: avias.athena.models.DeleteNamedQueryInput): F[scala.Unit]
+  def batchGetQueryExecution(input: avias.athena.models.BatchGetQueryExecutionInput): F[avias.athena.models.BatchGetQueryExecutionOutput]
+  def getNamedQuery(input: avias.athena.models.GetNamedQueryInput): F[avias.athena.models.GetNamedQueryOutput]
+  def stopQueryExecution(input: avias.athena.models.StopQueryExecutionInput): F[scala.Unit]
+  def getQueryResults(input: avias.athena.models.GetQueryResultsInput): F[avias.athena.models.GetQueryResultsOutput]
+  def createNamedQuery(input: avias.athena.models.CreateNamedQueryInput): F[avias.athena.models.CreateNamedQueryOutput]
+  def startQueryExecution(input: avias.athena.models.StartQueryExecutionInput): F[avias.athena.models.StartQueryExecutionOutput]
+  def batchGetNamedQuery(input: avias.athena.models.BatchGetNamedQueryInput): F[avias.athena.models.BatchGetNamedQueryOutput]
+  def listNamedQueries(input: avias.athena.models.ListNamedQueriesInput): F[avias.athena.models.ListNamedQueriesOutput]
 }

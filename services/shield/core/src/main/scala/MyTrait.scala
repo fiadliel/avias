@@ -1,12 +1,12 @@
-package org.lyranthe.araethura.shield
+package avias.shield
 trait Amazonshield[F[_]] {
-  def describeSubscription: F[org.lyranthe.araethura.shield.models.DescribeSubscriptionResponse]
-  def describeAttack(input: org.lyranthe.araethura.shield.models.DescribeAttackRequest): F[org.lyranthe.araethura.shield.models.DescribeAttackResponse]
+  def describeSubscription: F[avias.shield.models.DescribeSubscriptionResponse]
+  def describeAttack(input: avias.shield.models.DescribeAttackRequest): F[avias.shield.models.DescribeAttackResponse]
   def deleteSubscription: F[scala.Unit]
   def createSubscription: F[scala.Unit]
-  def createProtection(input: org.lyranthe.araethura.shield.models.CreateProtectionRequest): F[org.lyranthe.araethura.shield.models.CreateProtectionResponse]
-  def describeProtection(input: org.lyranthe.araethura.shield.models.DescribeProtectionRequest): F[org.lyranthe.araethura.shield.models.DescribeProtectionResponse]
-  def listProtections(input: org.lyranthe.araethura.shield.models.ListProtectionsRequest): F[org.lyranthe.araethura.shield.models.ListProtectionsResponse]
-  def deleteProtection(input: org.lyranthe.araethura.shield.models.DeleteProtectionRequest): F[scala.Unit]
-  def listAttacks(input: org.lyranthe.araethura.shield.models.ListAttacksRequest): F[org.lyranthe.araethura.shield.models.ListAttacksResponse]
+  def createProtection(input: avias.shield.models.CreateProtectionRequest): F[avias.shield.models.CreateProtectionResponse]
+  def describeProtection(input: avias.shield.models.DescribeProtectionRequest): F[avias.shield.models.DescribeProtectionResponse]
+  def listProtections(input: avias.shield.models.ListProtectionsRequest): F[avias.shield.models.ListProtectionsResponse]
+  def deleteProtection(input: avias.shield.models.DeleteProtectionRequest): F[scala.Unit]
+  def listAttacks(input: avias.shield.models.ListAttacksRequest): F[avias.shield.models.ListAttacksResponse]
 }

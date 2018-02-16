@@ -1,11 +1,11 @@
-package org.lyranthe.araethura.cloudhsm.models
+package avias.cloudhsm.models
 final case class ListHsmsResponse(hsmList: scala.Option[scala.List[java.lang.String]] = scala.None, nextToken: scala.Option[java.lang.String] = scala.None)
 final case class Tag(key: java.lang.String, value: java.lang.String)
 final case class ModifyHsmRequest(hsmArn: java.lang.String, subnetId: scala.Option[java.lang.String] = scala.None, iamRoleArn: scala.Option[java.lang.String] = scala.None, externalId: scala.Option[java.lang.String] = scala.None, eniIp: scala.Option[java.lang.String] = scala.None, syslogIp: scala.Option[java.lang.String] = scala.None)
 final case class GetConfigResponse(configType: scala.Option[java.lang.String] = scala.None, configFile: scala.Option[java.lang.String] = scala.None, configCred: scala.Option[java.lang.String] = scala.None)
 final case class DeleteHsmRequest(hsmArn: java.lang.String)
 final case class ListHsmsRequest(nextToken: scala.Option[java.lang.String] = scala.None)
-final case class ListTagsForResourceResponse(tagList: scala.List[org.lyranthe.araethura.cloudhsm.models.Tag])
+final case class ListTagsForResourceResponse(tagList: scala.List[avias.cloudhsm.models.Tag])
 final case class RemoveTagsFromResourceResponse(status: java.lang.String)
 final case class CreateHsmResponse(hsmArn: scala.Option[java.lang.String] = scala.None)
 final case class ModifyHapgRequest(hapgArn: java.lang.String, label: scala.Option[java.lang.String] = scala.None, partitionSerialList: scala.Option[scala.List[java.lang.String]] = scala.None)
@@ -17,7 +17,7 @@ final case class ListLunaClientsResponse(clientList: scala.List[java.lang.String
 case object ListAvailableZonesRequest
 final case class CreateLunaClientRequest(certificate: java.lang.String, label: scala.Option[java.lang.String] = scala.None)
 final case class DeleteHsmResponse(status: java.lang.String)
-final case class AddTagsToResourceRequest(resourceArn: java.lang.String, tagList: scala.List[org.lyranthe.araethura.cloudhsm.models.Tag])
+final case class AddTagsToResourceRequest(resourceArn: java.lang.String, tagList: scala.List[avias.cloudhsm.models.Tag])
 final case class DescribeHsmRequest(hsmArn: scala.Option[java.lang.String] = scala.None, hsmSerialNumber: scala.Option[java.lang.String] = scala.None)
 final case class GetConfigRequest(clientArn: java.lang.String, clientVersion: java.lang.String, hapgList: scala.List[java.lang.String])
 final case class CreateHsmRequest(subnetId: java.lang.String, sshKey: java.lang.String, iamRoleArn: java.lang.String, subscriptionType: java.lang.String, externalId: scala.Option[java.lang.String] = scala.None, clientToken: scala.Option[java.lang.String] = scala.None, eniIp: scala.Option[java.lang.String] = scala.None, syslogIp: scala.Option[java.lang.String] = scala.None)

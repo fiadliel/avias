@@ -1,8 +1,8 @@
-package org.lyranthe.araethura.gen
+package avias.gen
 
-import org.lyranthe.araethura.gen.generator.{Structures, Trait}
-import org.lyranthe.araethura.gen.graph._
-import org.lyranthe.araethura.gen.parse.service.ServiceMetadata
+import generator.{Structures, Trait}
+import graph._
+import parse.service.ServiceMetadata
 import quiver.Graph
 
 import scala.meta.{Term, Type}
@@ -33,7 +33,7 @@ object CodeGen {
             graph: Graph[ServiceNode, NodeName, EdgeLabel]): CodeGen = {
     new CodeGen(
       Term.Name(serviceName),
-      Term.Name("org.lyranthe.araethura"),
+      Term.Name("avias"),
       serviceName + "Exception",
       Type.Name("Amazon" + serviceName),
       Type.Name("Amazon" + serviceName + "Client"),

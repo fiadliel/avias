@@ -1,6 +1,6 @@
-package org.lyranthe.araethura.marketplacemeteringservice
+package avias.marketplacemeteringservice
 trait Amazonmarketplacemeteringservice[F[_]] {
-  def batchMeterUsage(input: org.lyranthe.araethura.marketplacemeteringservice.models.BatchMeterUsageRequest): F[org.lyranthe.araethura.marketplacemeteringservice.models.BatchMeterUsageResult]
-  def resolveCustomer(input: org.lyranthe.araethura.marketplacemeteringservice.models.ResolveCustomerRequest): F[org.lyranthe.araethura.marketplacemeteringservice.models.ResolveCustomerResult]
-  def meterUsage(input: org.lyranthe.araethura.marketplacemeteringservice.models.MeterUsageRequest): F[org.lyranthe.araethura.marketplacemeteringservice.models.MeterUsageResult]
+  def batchMeterUsage(input: avias.marketplacemeteringservice.models.BatchMeterUsageRequest): F[avias.marketplacemeteringservice.models.BatchMeterUsageResult]
+  def resolveCustomer(input: avias.marketplacemeteringservice.models.ResolveCustomerRequest): F[avias.marketplacemeteringservice.models.ResolveCustomerResult]
+  def meterUsage(input: avias.marketplacemeteringservice.models.MeterUsageRequest): F[avias.marketplacemeteringservice.models.MeterUsageResult]
 }

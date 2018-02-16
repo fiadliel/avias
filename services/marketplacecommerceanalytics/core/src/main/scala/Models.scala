@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.marketplacecommerceanalytics.models
+package avias.marketplacecommerceanalytics.models
 final case class GenerateDataSetRequest(dataSetPublicationDate: java.time.Instant, roleNameArn: java.lang.String, snsTopicArn: java.lang.String, destinationS3BucketName: java.lang.String, dataSetType: java.lang.String, destinationS3Prefix: scala.Option[java.lang.String] = scala.None, customerDefinedValues: scala.Option[scala.collection.immutable.Map[java.lang.String, java.lang.String]] = scala.None)
 final case class StartSupportDataExportRequest(dataSetType: java.lang.String, roleNameArn: java.lang.String, snsTopicArn: java.lang.String, destinationS3BucketName: java.lang.String, fromDate: java.time.Instant, destinationS3Prefix: scala.Option[java.lang.String] = scala.None, customerDefinedValues: scala.Option[scala.collection.immutable.Map[java.lang.String, java.lang.String]] = scala.None)
 final case class MarketplaceCommerceAnalyticsException(message: scala.Option[java.lang.String] = scala.None)

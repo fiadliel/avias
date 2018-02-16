@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.marketplacemeteringservice.models
+package avias.marketplacemeteringservice.models
 final case class TimestampOutOfBoundsException(message: scala.Option[java.lang.String] = scala.None)
 final case class UsageRecord(timestamp: java.time.Instant, customerIdentifier: java.lang.String, dimension: java.lang.String, quantity: scala.Int)
 final case class InvalidUsageDimensionException(message: scala.Option[java.lang.String] = scala.None)
@@ -6,14 +6,14 @@ final case class InvalidCustomerIdentifierException(message: scala.Option[java.l
 final case class ExpiredTokenException(message: scala.Option[java.lang.String] = scala.None)
 final case class MeterUsageRequest(timestamp: java.time.Instant, usageQuantity: scala.Int, dryRun: scala.Boolean, usageDimension: java.lang.String, productCode: java.lang.String)
 final case class ResolveCustomerRequest(registrationToken: java.lang.String)
-final case class BatchMeterUsageResult(results: scala.Option[scala.List[org.lyranthe.araethura.marketplacemeteringservice.models.UsageRecordResult]] = scala.None, unprocessedRecords: scala.Option[scala.List[org.lyranthe.araethura.marketplacemeteringservice.models.UsageRecord]] = scala.None)
+final case class BatchMeterUsageResult(results: scala.Option[scala.List[avias.marketplacemeteringservice.models.UsageRecordResult]] = scala.None, unprocessedRecords: scala.Option[scala.List[avias.marketplacemeteringservice.models.UsageRecord]] = scala.None)
 final case class InternalServiceErrorException(message: scala.Option[java.lang.String] = scala.None)
 final case class DuplicateRequestException(message: scala.Option[java.lang.String] = scala.None)
 final case class ThrottlingException(message: scala.Option[java.lang.String] = scala.None)
-final case class BatchMeterUsageRequest(usageRecords: scala.List[org.lyranthe.araethura.marketplacemeteringservice.models.UsageRecord], productCode: java.lang.String)
+final case class BatchMeterUsageRequest(usageRecords: scala.List[avias.marketplacemeteringservice.models.UsageRecord], productCode: java.lang.String)
 final case class InvalidTokenException(message: scala.Option[java.lang.String] = scala.None)
 final case class InvalidProductCodeException(message: scala.Option[java.lang.String] = scala.None)
 final case class ResolveCustomerResult(customerIdentifier: scala.Option[java.lang.String] = scala.None, productCode: scala.Option[java.lang.String] = scala.None)
 final case class MeterUsageResult(meteringRecordId: scala.Option[java.lang.String] = scala.None)
 final case class InvalidEndpointRegionException(message: scala.Option[java.lang.String] = scala.None)
-final case class UsageRecordResult(usageRecord: scala.Option[org.lyranthe.araethura.marketplacemeteringservice.models.UsageRecord] = scala.None, meteringRecordId: scala.Option[java.lang.String] = scala.None, status: scala.Option[java.lang.String] = scala.None)
+final case class UsageRecordResult(usageRecord: scala.Option[avias.marketplacemeteringservice.models.UsageRecord] = scala.None, meteringRecordId: scala.Option[java.lang.String] = scala.None, status: scala.Option[java.lang.String] = scala.None)

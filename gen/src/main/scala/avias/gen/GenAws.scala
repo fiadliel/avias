@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.gen
+package avias.gen
 
 import java.nio.file._
 
@@ -7,9 +7,9 @@ import cats._
 import cats.effect._
 import cats.implicits._
 import fs2.StreamApp.ExitCode
-import org.lyranthe.araethura.gen.generator.{Structures, Trait}
-import org.lyranthe.araethura.gen.graph.ServiceGraph
-import org.lyranthe.araethura.gen.parse.service.{JsonProtocol, Service}
+import avias.gen.generator.{Structures, Trait}
+import avias.gen.graph.ServiceGraph
+import avias.gen.parse.service.{JsonProtocol, Service}
 
 case class ServiceDetails(serviceName: String, service: Service)
 

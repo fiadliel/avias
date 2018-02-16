@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.common
+package avias.common
 
 import io.circe._
 import java.time.Instant

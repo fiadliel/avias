@@ -1,2 +1,2 @@
-package org.lyranthe.araethura.marketplaceentitlement
-trait Amazonmarketplaceentitlement[F[_]] { def getEntitlements(input: org.lyranthe.araethura.marketplaceentitlement.models.GetEntitlementsRequest): F[org.lyranthe.araethura.marketplaceentitlement.models.GetEntitlementsResult] }
+package avias.marketplaceentitlement
+trait Amazonmarketplaceentitlement[F[_]] { def getEntitlements(input: avias.marketplaceentitlement.models.GetEntitlementsRequest): F[avias.marketplaceentitlement.models.GetEntitlementsResult] }

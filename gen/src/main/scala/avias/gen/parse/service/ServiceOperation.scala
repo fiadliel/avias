@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.gen.parse.service
+package avias.gen.parse.service
 
 case class ServiceOperation(name: String,
                             http: HttpOperation,

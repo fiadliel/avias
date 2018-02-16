@@ -1,10 +1,10 @@
-package org.lyranthe.araethura.kinesisfirehose
+package avias.kinesisfirehose
 trait Amazonkinesisfirehose[F[_]] {
-  def updateDestination(input: org.lyranthe.araethura.kinesisfirehose.models.UpdateDestinationInput): F[scala.Unit]
-  def describeDeliveryStream(input: org.lyranthe.araethura.kinesisfirehose.models.DescribeDeliveryStreamInput): F[org.lyranthe.araethura.kinesisfirehose.models.DescribeDeliveryStreamOutput]
-  def putRecord(input: org.lyranthe.araethura.kinesisfirehose.models.PutRecordInput): F[org.lyranthe.araethura.kinesisfirehose.models.PutRecordOutput]
-  def listDeliveryStreams(input: org.lyranthe.araethura.kinesisfirehose.models.ListDeliveryStreamsInput): F[org.lyranthe.araethura.kinesisfirehose.models.ListDeliveryStreamsOutput]
-  def createDeliveryStream(input: org.lyranthe.araethura.kinesisfirehose.models.CreateDeliveryStreamInput): F[org.lyranthe.araethura.kinesisfirehose.models.CreateDeliveryStreamOutput]
-  def deleteDeliveryStream(input: org.lyranthe.araethura.kinesisfirehose.models.DeleteDeliveryStreamInput): F[scala.Unit]
-  def putRecordBatch(input: org.lyranthe.araethura.kinesisfirehose.models.PutRecordBatchInput): F[org.lyranthe.araethura.kinesisfirehose.models.PutRecordBatchOutput]
+  def updateDestination(input: avias.kinesisfirehose.models.UpdateDestinationInput): F[scala.Unit]
+  def describeDeliveryStream(input: avias.kinesisfirehose.models.DescribeDeliveryStreamInput): F[avias.kinesisfirehose.models.DescribeDeliveryStreamOutput]
+  def putRecord(input: avias.kinesisfirehose.models.PutRecordInput): F[avias.kinesisfirehose.models.PutRecordOutput]
+  def listDeliveryStreams(input: avias.kinesisfirehose.models.ListDeliveryStreamsInput): F[avias.kinesisfirehose.models.ListDeliveryStreamsOutput]
+  def createDeliveryStream(input: avias.kinesisfirehose.models.CreateDeliveryStreamInput): F[avias.kinesisfirehose.models.CreateDeliveryStreamOutput]
+  def deleteDeliveryStream(input: avias.kinesisfirehose.models.DeleteDeliveryStreamInput): F[scala.Unit]
+  def putRecordBatch(input: avias.kinesisfirehose.models.PutRecordBatchInput): F[avias.kinesisfirehose.models.PutRecordBatchOutput]
 }

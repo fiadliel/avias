@@ -1,6 +1,6 @@
-package org.lyranthe.araethura.gen.graph
+package avias.gen.graph
 
-import org.lyranthe.araethura.gen.parse.service.HttpOperation
+import avias.gen.parse.service.HttpOperation
 import quiver.Graph
 
 import scala.meta.{Term, Type}

@@ -1,4 +1,4 @@
-package org.lyranthe.araethura.gen.generator
+package avias.gen.generator
 
 import scala.meta.{Defn, Enumerator, Lit, Pat, Term, Type}
 import scala.meta.quasiquotes._
