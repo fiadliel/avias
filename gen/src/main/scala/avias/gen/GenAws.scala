@@ -20,7 +20,7 @@ object GenAws extends StreamApp[IO] {
 
   def writeTrait(baseDir: Path, traits: Trait): IO[Unit] = {
     for {
-      dir <- IO(Files.createDirectories(baseDir.resolve("core/src/main/scala")))
+      dir <- IO(Files.createDirectories(baseDir.resolve("core/src/main/scala/avias")))
       fileContents = traits.definition.toString()
       _ <- writeFile(dir.resolve("MyTrait.scala"), fileContents)
     } yield ()
@@ -28,7 +28,7 @@ object GenAws extends StreamApp[IO] {
 
   def writeHttp4s(baseDir: Path, traits: Trait): IO[Unit] = {
     for {
-      dir <- IO(Files.createDirectories(baseDir.resolve("http4s/src/main/scala")))
+      dir <- IO(Files.createDirectories(baseDir.resolve("http4s/src/main/scala/avias")))
       fileContents = traits.http4sImplementation.toString()
       _ <- writeFile(dir.resolve("Http4sImpl.scala"), fileContents)
     } yield ()
@@ -36,7 +36,7 @@ object GenAws extends StreamApp[IO] {
 
   def writeModels(baseDir: Path, structures: Structures): IO[Unit] = {
     for {
-      dir <- IO(Files.createDirectories(baseDir.resolve("core/src/main/scala")))
+      dir <- IO(Files.createDirectories(baseDir.resolve("core/src/main/scala/avias")))
       fileContents = structures.modelDefinitions.toString()
       _ <- writeFile(dir.resolve("Models.scala"), fileContents)
     } yield ()
@@ -44,7 +44,7 @@ object GenAws extends StreamApp[IO] {
 
   def writeCirce(baseDir: Path, structures: Structures): IO[Unit] = {
     for {
-      dir <- IO(Files.createDirectories(baseDir.resolve("circe/src/main/scala")))
+      dir <- IO(Files.createDirectories(baseDir.resolve("circe/src/main/scala/avias")))
       fileContents = structures.circeImplicits.toString()
       _ <- writeFile(dir.resolve("CirceImplicits.scala"), fileContents)
     } yield ()
