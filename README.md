@@ -1,6 +1,8 @@
 # avias
 ## Functional AWS API implementation for Scala
 
+[![Join the chat at https://gitter.im/scala-avias/Lobby](https://badges.gitter.im/scala-avias/Lobby.svg)](https://gitter.im/scala-avias/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This library will implement most Amazon APIs with a from-scratch reimplementation,
 based on the underlying service metadata provided by Amazon.
 
