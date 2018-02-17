@@ -23,3 +23,5 @@ There are currently three main modules per-API:
     - ECS metadata
   - Change class encoding to avoid binary incompatibility issues (contraband or similar is possible)
   - Think about retry strategies
+  - Add enums
+  - Think about refined or other strategies for validating input parameters
