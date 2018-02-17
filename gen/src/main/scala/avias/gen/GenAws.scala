@@ -133,18 +133,18 @@ object GenAws extends StreamApp[IO] {
           Files.write(
             Paths.get(s"../projects.sbt"),
             s"""
-               |lazy val `common-core` = project.in(file("common/core"))
-               |lazy val `common-circe` = project.in(file("common/circe")).settings(Dependencies.circe).dependsOn(`common-core`)
-               |lazy val `common-http4s` = project.in(file("common/http4s")).settings(Dependencies.http4s).dependsOn(`common-circe`)
+               |val `common-core` = project.in(file("common/core"))
+               |val `common-circe` = project.in(file("common/circe")).settings(Dependencies.circe).dependsOn(`common-core`)
+               |val `common-http4s` = project.in(file("common/http4s")).settings(Dependencies.http4s).dependsOn(`common-circe`)
                |""".stripMargin.getBytes(),
             StandardOpenOption.TRUNCATE_EXISTING
           )))
       service <- getServices[IO]
       _ <- Stream.eval(generateFromSources(service))
       sbtFile = s"""
-           |lazy val `${service.serviceName}` = project.in(file("services/${service.serviceName}/core"))
-           |lazy val `${service.serviceName}-circe` = project.in(file("services/${service.serviceName}/circe")).dependsOn(`common-circe`, `${service.serviceName}`)
-           |lazy val `${service.serviceName}-http4s` = project.in(file("services/${service.serviceName}/http4s")).dependsOn(`common-http4s`, `${service.serviceName}-circe`)
+           |val `${service.serviceName}-core` = project.in(file("services/${service.serviceName}/core"))
+           |val `${service.serviceName}-circe` = project.in(file("services/${service.serviceName}/circe")).dependsOn(`common-circe`, `${service.serviceName}-core`)
+           |val `${service.serviceName}-http4s` = project.in(file("services/${service.serviceName}/http4s")).dependsOn(`common-http4s`, `${service.serviceName}-circe`)
            |""".stripMargin
       _ <- Stream.eval(
         IO(
