@@ -8,7 +8,7 @@ import cats.effect.Sync
 import cats.implicits._
 import io.circe.{Decoder, Encoder}
 import avias.common._
-import org.http4s.{Header, Method, Request, Uri}
+import org.http4s.{EntityDecoder, EntityEncoder, Header, Method, Request, Uri}
 import org.http4s.client.Client
 import tsec.common._
 import tsec.mac.imports._
@@ -63,11 +63,12 @@ private[avias] object ClientUtils {
       .putHeaders(addedHeaders: _*)
   }
 
-  def doRequestCommon[F[_], O: Decoder](currentTime: CurrentTime,
-                                        request: Request[F],
-                                        client: Client[F],
-                                        awsData: AwsData[F],
-                                        serviceType: String)(implicit F: Sync[F]): F[O] = {
+  def doRequestCommon[F[_] : Sync, O](currentTime: CurrentTime,
+                                      request: Request[F],
+                                      client: Client[F],
+                                      awsData: AwsData[F],
+                                      serviceType: String)
+                                     (implicit entityDecoder: EntityDecoder[F, O]): F[O] = {
     for {
       canonicalRequest <- CanonicalRequest.fromRequest[F, SHA256](request)
       credentialScope = CredentialScope(currentTime, serviceType, awsData.region)
@@ -88,32 +89,35 @@ private[avias] object ClientUtils {
     } yield result
   }
 
-  def doRequestWithoutBody[F[_], O: Decoder](client: Client[F],
-                                             awsData: AwsData[F],
-                                             serviceType: String,
-                                             serviceAndPrefix: Option[String],
-                                             requestType: String,
-                                             method: Method,
-                                             path: Uri.Path)(implicit F: Sync[F]): F[O] = {
+  def doRequestWithoutBody[F[_] : Sync, O](client: Client[F],
+                                           awsData: AwsData[F],
+                                           serviceType: String,
+                                           serviceAndPrefix: Option[String],
+                                           requestType: String,
+                                           method: Method,
+                                           path: Uri.Path)
+                                          (implicit entityDecoder: EntityDecoder[F, O]): F[O] = {
     for {
       currentTime <- CurrentTime.fromNow[F]
-      request   = mkRequest(currentTime, awsData, serviceType, serviceAndPrefix, requestType, method, path)
+      request = mkRequest(currentTime, awsData, serviceType, serviceAndPrefix, requestType, method, path)
       result <- doRequestCommon(currentTime, request, client, awsData, serviceType)
     } yield result
   }
 
-  def doRequest[F[_], O: Decoder, I: Encoder](client: Client[F],
-                                              awsData: AwsData[F],
-                                              serviceType: String,
-                                              serviceAndPrefix: Option[String],
-                                              requestType: String,
-                                              method: Method,
-                                              requestUri: Uri.Path,
-                                              body: I)(implicit F: Sync[F]): F[O] = {
+  def doRequest[F[_] : Sync, O, I](client: Client[F],
+                                   awsData: AwsData[F],
+                                   serviceType: String,
+                                   serviceAndPrefix: Option[String],
+                                   requestType: String,
+                                   method: Method,
+                                   requestUri: Uri.Path,
+                                   body: I)
+                                  (implicit entityEncoder: EntityEncoder[F, I],
+                                   entityDecoder: EntityDecoder[F, O]): F[O] = {
     for {
       currentTime <- CurrentTime.fromNow[F]
       request <- mkRequest(currentTime, awsData, serviceType, serviceAndPrefix, requestType, method, requestUri).withBody(body)
-      result  <- doRequestCommon(currentTime, request, client, awsData, serviceType)
+      result <- doRequestCommon(currentTime, request, client, awsData, serviceType)
     } yield result
   }
 }

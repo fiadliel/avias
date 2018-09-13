@@ -7,9 +7,9 @@ import cats._
 import cats.effect._
 import cats.implicits._
 import fs2.StreamApp.ExitCode
-import avias.gen.generator.{Structures, Trait}
+import avias.gen.generator._
 import avias.gen.graph.ServiceGraph
-import avias.gen.parse.service.{JsonProtocol, Service}
+import avias.gen.parse.service._
 
 case class ServiceDetails(serviceName: String, service: Service)
 
@@ -50,6 +50,11 @@ object GenAws extends StreamApp[IO] {
     } yield ()
   }
 
+  def writeEntityCodecs(baseDir: Path, structures: Structures, serviceProtocol: ServiceProtocol): IO[Unit] = serviceProtocol match {
+    case JsonProtocol ⇒ writeCirce(baseDir, structures)
+    case _ ⇒ IO.unit
+  }
+
   def generateFromSources(serviceDetails: ServiceDetails): IO[Unit] = {
     val graph = ServiceGraph(serviceDetails.service)
 
@@ -70,7 +75,7 @@ object GenAws extends StreamApp[IO] {
       _ <- writeTrait(baseDir, traits)
       _ <- writeHttp4s(baseDir, traits)
       _ <- writeModels(baseDir, structures)
-      _ <- writeCirce(baseDir, structures)
+      _ <- writeEntityCodecs(baseDir, structures, serviceDetails.service.metadata.protocol)
     } yield ()
   }
 
@@ -122,7 +127,7 @@ object GenAws extends StreamApp[IO] {
       serviceDir <- getServiceDirs(maybeServiceDir, serviceName)
       _ = { println(serviceDir) }
       serviceFile = serviceDir._2.resolve("service-2.json")
-      service <- Stream.eval(Service.fromFile(serviceFile)).filter(_.metadata.protocol == JsonProtocol)
+      service <- Stream.eval(Service.fromFile(serviceFile)).filter(service ⇒ Set[ServiceProtocol](JsonProtocol/*, Ec2Protocol*/).contains(service.metadata.protocol))
     } yield ServiceDetails(serviceDir._1, service)
   }
 

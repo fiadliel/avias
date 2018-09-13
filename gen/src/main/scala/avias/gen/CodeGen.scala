@@ -23,7 +23,9 @@ class CodeGen(serviceName: Term.Name,
     http4sClientName,
     serviceMetadata.endpointPrefix,
     serviceMetadata.targetPrefix,
-    graph)
+    graph,
+    serviceMetadata.protocol,
+  )
 
 }
 
