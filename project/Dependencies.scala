@@ -3,9 +3,12 @@ import sbt.Keys._
 
 object Dependencies {
   val CirceVersion = "0.9.1"
-  val Http4sVersion = "0.18.0"
+  val Http4sVersion = "0.18.17"
   val TsecVersion = "0.0.1-M7"
   val monocleVersion = "1.5.0-cats"
+  val simulacrumVersion = "0.13.0"
+  val scalatestVersion = "3.0.5"
+  val macroParadiseVersion = "2.1.1"
 
   val core = Seq(
   libraryDependencies ++= Seq(
@@ -32,5 +35,13 @@ object Dependencies {
       "org.http4s" %% "http4s-client" % Http4sVersion,
       "org.http4s" %% "http4s-circe" % Http4sVersion
     )
+  )
+
+  val simulacrum = Seq(
+    addCompilerPlugin("org.scalamacros" % "paradise" % macroParadiseVersion cross CrossVersion.patch),
+    libraryDependencies ++= Seq(
+      "com.github.mpilquist" %% "simulacrum" % simulacrumVersion,
+      "org.scalatest" %% "scalatest" % scalatestVersion % Test,
+    ),
   )
 }

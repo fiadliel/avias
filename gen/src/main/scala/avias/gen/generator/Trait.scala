@@ -97,6 +97,8 @@ package $servicePackageName {
     val codecImport = serviceProtocol match {
       case JsonProtocol ⇒
         Option(q"""import $servicePackageName.circe._""")
+      case Ec2Protocol ⇒
+        Option(q"""import $servicePackageName.ec2._""")
       case _ ⇒
         None
     }

@@ -1,9 +1,10 @@
 package avias.gen.generator
 
 import avias.gen.graph._
+import avias.gen.parse.service.ServiceProtocol
 import quiver.{Context, Graph}
 
-import scala.meta.Term
+import scala.meta.{Pkg, Term}
 import scala.meta.quasiquotes._
 
 case class Structures(servicePackageName: Term.Select,
@@ -20,8 +21,23 @@ package $servicePackageName {
   import io.circe.syntax._
 
   object circe extends avias.common.DefaultCodecs {
-    ..${items.map(_.encoder)}
+    ..${items.flatMap(_.encoder)}
     ..${items.map(_.decoder)}
+  }
+}
+"""
+
+  def ec2Implicits: Pkg =
+    q"""
+package $servicePackageName {
+
+  import org.http4s._
+  import org.http4s.UrlForm._
+  import avias.ec2.models._
+  import avias.Ec2RequestEncoder
+
+  object ec2 {
+    ..${items.flatMap(_.encoder)}
   }
 }
 """
@@ -37,7 +53,9 @@ package $servicePackageName {
 object Structures {
   def fromGraph(serviceName: Term.Name,
                 packageName: Term.Ref,
-                graph: Graph[ServiceNode, NodeName, EdgeLabel]): Structures = {
+                graph: Graph[ServiceNode, NodeName, EdgeLabel],
+                serviceProtocol: ServiceProtocol,
+               ): Structures = {
     val serviceTraitName = Term.Name(serviceName.value.replace("-", "_"))
     val servicePackageName = Term.Select(packageName, serviceTraitName)
     val commonPackageName = Term.Select(packageName, Term.Name("common"))
@@ -45,8 +63,8 @@ object Structures {
     val circePackageName = Term.Select(servicePackageName, Term.Name("circe"))
 
     val structures = graph.contexts
-      .collect({
-        case Context(in, e: StructureNode, label, out) =>
+      .collect {
+        case Context(in, _: StructureNode, label, out) =>
           val isError = in.forall(_._1 == "error")
 
           val requiredParams = out.collect {
@@ -62,8 +80,8 @@ object Structures {
           }
 
           val allParams = (requiredParams ++ optionalParams).toList
-          Structure(modelsPackageName.toString, label.term, isError, allParams)
-    }).toList
+          Structure(modelsPackageName.toString, label.term, isError, allParams, serviceProtocol)
+      }.toList
 
     Structures(servicePackageName, structures)
   }

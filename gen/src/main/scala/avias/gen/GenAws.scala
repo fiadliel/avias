@@ -50,8 +50,17 @@ object GenAws extends StreamApp[IO] {
     } yield ()
   }
 
+  def writeEc2(baseDir: Path, structures: Structures): IO[Unit] = {
+    for {
+      dir <- IO(Files.createDirectories(baseDir.resolve("ec2-protocol/src/main/scala/avias")))
+      fileContents = structures.ec2Implicits.toString()
+      _ <- writeFile(dir.resolve("Ec2Implicits.scala"), fileContents)
+    } yield ()
+  }
+
   def writeEntityCodecs(baseDir: Path, structures: Structures, serviceProtocol: ServiceProtocol): IO[Unit] = serviceProtocol match {
     case JsonProtocol ⇒ writeCirce(baseDir, structures)
+    case Ec2Protocol ⇒ writeEc2(baseDir, structures)
     case _ ⇒ IO.unit
   }
 
@@ -127,8 +136,23 @@ object GenAws extends StreamApp[IO] {
       serviceDir <- getServiceDirs(maybeServiceDir, serviceName)
       _ = { println(serviceDir) }
       serviceFile = serviceDir._2.resolve("service-2.json")
-      service <- Stream.eval(Service.fromFile(serviceFile)).filter(service ⇒ Set[ServiceProtocol](JsonProtocol/*, Ec2Protocol*/).contains(service.metadata.protocol))
+      service <- Stream.eval(Service.fromFile(serviceFile)).filter(service ⇒ Set[ServiceProtocol](JsonProtocol, Ec2Protocol).contains(service.metadata.protocol))
     } yield ServiceDetails(serviceDir._1, service)
+  }
+
+  private def projects(service: ServiceDetails) = service.service.metadata.protocol match {
+    case JsonProtocol ⇒
+      s"""
+         |val `${service.serviceName}-core` = project.in(file("services/${service.serviceName}/core"))
+         |val `${service.serviceName}-circe` = project.in(file("services/${service.serviceName}/circe")).dependsOn(`common-circe`, `${service.serviceName}-core`)
+         |val `${service.serviceName}-http4s` = project.in(file("services/${service.serviceName}/http4s")).dependsOn(`common-http4s`, `${service.serviceName}-circe`)
+         |""".stripMargin
+    case Ec2Protocol ⇒
+      s"""
+         |val `${service.serviceName}-core` = project.in(file("services/${service.serviceName}/core"))
+         |val `${service.serviceName}-ec2-protocol` = project.in(file("services/${service.serviceName}/ec2-protocol")).settings(Dependencies.http4s).dependsOn(`common-ec2-protocol`, `${service.serviceName}-core`)
+         |val `${service.serviceName}-http4s` = project.in(file("services/${service.serviceName}/http4s")).dependsOn(`common-http4s`, `${service.serviceName}-ec2-protocol`)
+       """.stripMargin
   }
 
   def runProgram: Stream[IO, Unit] = {
@@ -140,21 +164,17 @@ object GenAws extends StreamApp[IO] {
             s"""
                |val `common-core` = project.in(file("common/core"))
                |val `common-circe` = project.in(file("common/circe")).settings(Dependencies.circe).dependsOn(`common-core`)
+               |val `common-ec2-protocol` = project.in(file("common/ec2-protocol")).settings(Dependencies.simulacrum)
                |val `common-http4s` = project.in(file("common/http4s")).settings(Dependencies.http4s).dependsOn(`common-circe`)
                |""".stripMargin.getBytes(),
             StandardOpenOption.TRUNCATE_EXISTING
           )))
       service <- getServices[IO]
       _ <- Stream.eval(generateFromSources(service))
-      sbtFile = s"""
-           |val `${service.serviceName}-core` = project.in(file("services/${service.serviceName}/core"))
-           |val `${service.serviceName}-circe` = project.in(file("services/${service.serviceName}/circe")).dependsOn(`common-circe`, `${service.serviceName}-core`)
-           |val `${service.serviceName}-http4s` = project.in(file("services/${service.serviceName}/http4s")).dependsOn(`common-http4s`, `${service.serviceName}-circe`)
-           |""".stripMargin
       _ <- Stream.eval(
         IO(
           Files.write(Paths.get(s"../projects.sbt"),
-                      sbtFile.getBytes,
+                      projects(service).getBytes,
                       StandardOpenOption.APPEND)))
     } yield ()
   }
