@@ -2,6 +2,7 @@ package avias.stepfunctions.http4s
 import org.http4s.Method._
 import avias.stepfunctions.circe._
 import avias.stepfunctions.models
+import avias.common.http4s.ClientUtils._
 class AmazonstepfunctionsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.stepfunctions.Amazonstepfunctions[F] {
   private[this] final val ServiceType: String = "states"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWSStepFunctions")

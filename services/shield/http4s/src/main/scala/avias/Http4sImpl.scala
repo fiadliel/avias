@@ -2,6 +2,7 @@ package avias.shield.http4s
 import org.http4s.Method._
 import avias.shield.circe._
 import avias.shield.models
+import avias.common.http4s.ClientUtils._
 class AmazonshieldClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.shield.Amazonshield[F] {
   private[this] final val ServiceType: String = "shield"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWSShield_20160616")

@@ -2,6 +2,7 @@ package avias.directory.http4s
 import org.http4s.Method._
 import avias.directory.circe._
 import avias.directory.models
+import avias.common.http4s.ClientUtils._
 class AmazondirectoryClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.directory.Amazondirectory[F] {
   private[this] final val ServiceType: String = "ds"
   private[this] final val ServiceAndPrefix: Option[String] = Some("DirectoryService_20150416")

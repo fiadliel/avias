@@ -2,6 +2,7 @@ package avias.storagegateway.http4s
 import org.http4s.Method._
 import avias.storagegateway.circe._
 import avias.storagegateway.models
+import avias.common.http4s.ClientUtils._
 class AmazonstoragegatewayClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.storagegateway.Amazonstoragegateway[F] {
   private[this] final val ServiceType: String = "storagegateway"
   private[this] final val ServiceAndPrefix: Option[String] = Some("StorageGateway_20130630")

@@ -2,6 +2,7 @@ package avias.budgets.http4s
 import org.http4s.Method._
 import avias.budgets.circe._
 import avias.budgets.models
+import avias.common.http4s.ClientUtils._
 class AmazonbudgetsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.budgets.Amazonbudgets[F] {
   private[this] final val ServiceType: String = "budgets"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWSBudgetServiceGateway")

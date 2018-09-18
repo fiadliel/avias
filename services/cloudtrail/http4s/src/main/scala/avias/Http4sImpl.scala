@@ -2,6 +2,7 @@ package avias.cloudtrail.http4s
 import org.http4s.Method._
 import avias.cloudtrail.circe._
 import avias.cloudtrail.models
+import avias.common.http4s.ClientUtils._
 class AmazoncloudtrailClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.cloudtrail.Amazoncloudtrail[F] {
   private[this] final val ServiceType: String = "cloudtrail"
   private[this] final val ServiceAndPrefix: Option[String] = Some("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101")

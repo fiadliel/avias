@@ -2,6 +2,7 @@ package avias.codebuild.http4s
 import org.http4s.Method._
 import avias.codebuild.circe._
 import avias.codebuild.models
+import avias.common.http4s.ClientUtils._
 class AmazoncodebuildClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.codebuild.Amazoncodebuild[F] {
   private[this] final val ServiceType: String = "codebuild"
   private[this] final val ServiceAndPrefix: Option[String] = Some("CodeBuild_20161006")

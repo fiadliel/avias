@@ -2,6 +2,7 @@ package avias.codestar.http4s
 import org.http4s.Method._
 import avias.codestar.circe._
 import avias.codestar.models
+import avias.common.http4s.ClientUtils._
 class AmazoncodestarClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.codestar.Amazoncodestar[F] {
   private[this] final val ServiceType: String = "codestar"
   private[this] final val ServiceAndPrefix: Option[String] = Some("CodeStar_20170419")

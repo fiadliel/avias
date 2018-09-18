@@ -2,6 +2,7 @@ package avias.dax.http4s
 import org.http4s.Method._
 import avias.dax.circe._
 import avias.dax.models
+import avias.common.http4s.ClientUtils._
 class AmazondaxClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.dax.Amazondax[F] {
   private[this] final val ServiceType: String = "dax"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AmazonDAXV3")

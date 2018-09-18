@@ -2,6 +2,7 @@ package avias.emr.http4s
 import org.http4s.Method._
 import avias.emr.circe._
 import avias.emr.models
+import avias.common.http4s.ClientUtils._
 class AmazonemrClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.emr.Amazonemr[F] {
   private[this] final val ServiceType: String = "elasticmapreduce"
   private[this] final val ServiceAndPrefix: Option[String] = Some("ElasticMapReduce")

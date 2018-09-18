@@ -2,6 +2,7 @@ package avias.appstream.http4s
 import org.http4s.Method._
 import avias.appstream.circe._
 import avias.appstream.models
+import avias.common.http4s.ClientUtils._
 class AmazonappstreamClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.appstream.Amazonappstream[F] {
   private[this] final val ServiceType: String = "appstream2"
   private[this] final val ServiceAndPrefix: Option[String] = Some("PhotonAdminProxyService")

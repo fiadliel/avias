@@ -2,6 +2,7 @@ package avias.events.http4s
 import org.http4s.Method._
 import avias.events.circe._
 import avias.events.models
+import avias.common.http4s.ClientUtils._
 class AmazoneventsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.events.Amazonevents[F] {
   private[this] final val ServiceType: String = "events"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWSEvents")

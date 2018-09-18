@@ -2,6 +2,7 @@ package avias.servicecatalog.http4s
 import org.http4s.Method._
 import avias.servicecatalog.circe._
 import avias.servicecatalog.models
+import avias.common.http4s.ClientUtils._
 class AmazonservicecatalogClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.servicecatalog.Amazonservicecatalog[F] {
   private[this] final val ServiceType: String = "servicecatalog"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWS242ServiceCatalogService")

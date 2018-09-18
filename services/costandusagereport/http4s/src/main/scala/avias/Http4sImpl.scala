@@ -2,6 +2,7 @@ package avias.costandusagereport.http4s
 import org.http4s.Method._
 import avias.costandusagereport.circe._
 import avias.costandusagereport.models
+import avias.common.http4s.ClientUtils._
 class AmazoncostandusagereportClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.costandusagereport.Amazoncostandusagereport[F] {
   private[this] final val ServiceType: String = "cur"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWSOrigamiServiceGatewayService")

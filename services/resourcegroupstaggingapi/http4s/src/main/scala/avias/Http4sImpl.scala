@@ -2,6 +2,7 @@ package avias.resourcegroupstaggingapi.http4s
 import org.http4s.Method._
 import avias.resourcegroupstaggingapi.circe._
 import avias.resourcegroupstaggingapi.models
+import avias.common.http4s.ClientUtils._
 class AmazonresourcegroupstaggingapiClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.resourcegroupstaggingapi.Amazonresourcegroupstaggingapi[F] {
   private[this] final val ServiceType: String = "tagging"
   private[this] final val ServiceAndPrefix: Option[String] = Some("ResourceGroupsTaggingAPI_20170126")

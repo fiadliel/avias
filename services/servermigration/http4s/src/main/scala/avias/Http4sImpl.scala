@@ -2,6 +2,7 @@ package avias.servermigration.http4s
 import org.http4s.Method._
 import avias.servermigration.circe._
 import avias.servermigration.models
+import avias.common.http4s.ClientUtils._
 class AmazonservermigrationClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.servermigration.Amazonservermigration[F] {
   private[this] final val ServiceType: String = "sms"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWSServerMigrationService_V2016_10_24")

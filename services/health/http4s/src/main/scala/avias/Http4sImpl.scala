@@ -2,6 +2,7 @@ package avias.health.http4s
 import org.http4s.Method._
 import avias.health.circe._
 import avias.health.models
+import avias.common.http4s.ClientUtils._
 class AmazonhealthClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.health.Amazonhealth[F] {
   private[this] final val ServiceType: String = "health"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWSHealth_20160804")

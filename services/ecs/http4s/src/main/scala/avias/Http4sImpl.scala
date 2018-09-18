@@ -2,6 +2,7 @@ package avias.ecs.http4s
 import org.http4s.Method._
 import avias.ecs.circe._
 import avias.ecs.models
+import avias.common.http4s.ClientUtils._
 class AmazonecsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.ecs.Amazonecs[F] {
   private[this] final val ServiceType: String = "ecs"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AmazonEC2ContainerServiceV20141113")

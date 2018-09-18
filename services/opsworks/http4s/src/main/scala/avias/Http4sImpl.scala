@@ -2,6 +2,7 @@ package avias.opsworks.http4s
 import org.http4s.Method._
 import avias.opsworks.circe._
 import avias.opsworks.models
+import avias.common.http4s.ClientUtils._
 class AmazonopsworksClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.opsworks.Amazonopsworks[F] {
   private[this] final val ServiceType: String = "opsworks"
   private[this] final val ServiceAndPrefix: Option[String] = Some("OpsWorks_20130218")

@@ -2,6 +2,7 @@ package avias.cloudhsm.http4s
 import org.http4s.Method._
 import avias.cloudhsm.circe._
 import avias.cloudhsm.models
+import avias.common.http4s.ClientUtils._
 class AmazoncloudhsmClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.cloudhsm.Amazoncloudhsm[F] {
   private[this] final val ServiceType: String = "cloudhsm"
   private[this] final val ServiceAndPrefix: Option[String] = Some("CloudHsmFrontendService")

@@ -2,6 +2,7 @@ package avias.inspector.http4s
 import org.http4s.Method._
 import avias.inspector.circe._
 import avias.inspector.models
+import avias.common.http4s.ClientUtils._
 class AmazoninspectorClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.inspector.Amazoninspector[F] {
   private[this] final val ServiceType: String = "inspector"
   private[this] final val ServiceAndPrefix: Option[String] = Some("InspectorService")
