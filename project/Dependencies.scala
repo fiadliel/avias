@@ -44,4 +44,8 @@ object Dependencies {
       "org.scalatest" %% "scalatest" % scalatestVersion % Test,
     ),
   )
+
+  val scalatest = Seq(
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test
+  )
 }

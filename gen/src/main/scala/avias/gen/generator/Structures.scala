@@ -58,9 +58,7 @@ object Structures {
                ): Structures = {
     val serviceTraitName = Term.Name(serviceName.value.replace("-", "_"))
     val servicePackageName = Term.Select(packageName, serviceTraitName)
-    val commonPackageName = Term.Select(packageName, Term.Name("common"))
     val modelsPackageName = Term.Select(servicePackageName, Term.Name("models"))
-    val circePackageName = Term.Select(servicePackageName, Term.Name("circe"))
 
     val structures = graph.contexts
       .collect {
@@ -70,17 +68,22 @@ object Structures {
           val requiredParams = out.collect {
             case (ItemForStructure(item, true), v: ShapeNode) =>
               val tpe = v.getType(modelsPackageName.toString, graph)
-              StructureField(item, tpe, false)
+              StructureField(item, tpe, isOptional = false)
           }
 
           val optionalParams = out.collect {
             case (ItemForStructure(item, false), v: ShapeNode) =>
               val tpe = v.getType(modelsPackageName.toString, graph)
-              StructureField(item, tpe, true)
+              StructureField(item, tpe, isOptional = true)
+          }
+
+          val operation = in.collectFirst {
+            case (_, operationNode: OperationNode) =>
+              operationNode.item
           }
 
           val allParams = (requiredParams ++ optionalParams).toList
-          Structure(modelsPackageName.toString, label.term, isError, allParams, serviceProtocol)
+          Structure(modelsPackageName.toString, label.term, isError, allParams, serviceProtocol, operation)
       }.toList
 
     Structures(servicePackageName, structures)

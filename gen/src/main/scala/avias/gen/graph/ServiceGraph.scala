@@ -27,15 +27,15 @@ object ServiceGraph {
               FloatNode(k, documentation)
             case IntegerServiceShape(documentation, min, max) =>
               IntegerNode(k, documentation, min, max)
-            case ListServiceShape(documentation, shape, min) =>
+            case ListServiceShape(documentation, _, min) =>
               ListNode(k, documentation, min)
             case LongServiceShape(documentation, min, max) =>
               LongNode(k, documentation, min, max)
-            case MapServiceShape(documentation, kShape, vShape) =>
+            case MapServiceShape(documentation, _, _) =>
               MapNode(k, documentation)
             case StringServiceShape(documentation, enum, max) =>
               StringNode(k, documentation, enum.map(_.toSet), max)
-            case StructureServiceShape(documentation, required, members) =>
+            case StructureServiceShape(documentation, _, members) =>
               StructureNode(k, members.isEmpty, documentation)
             case TimestampServiceShape(documentation) =>
               TimestampNode(k, documentation)
@@ -73,51 +73,51 @@ object ServiceGraph {
 
     val shapeEdges =
       service.shapes.flatMap {
-        case (k, BlobServiceShape(_)) =>
+        case (_, BlobServiceShape(_)) =>
           Seq.empty
-        case (k, BooleanServiceShape(_)) =>
+        case (_, BooleanServiceShape(_)) =>
           Seq.empty
-        case (k, DoubleServiceShape(_)) =>
+        case (_, DoubleServiceShape(_)) =>
           Seq.empty
-        case (k, FloatServiceShape(_)) =>
+        case (_, FloatServiceShape(_)) =>
           Seq.empty
-        case (k, IntegerServiceShape(_, _, _)) =>
+        case (_, IntegerServiceShape(_, _, _)) =>
           Seq.empty
         case (k, ListServiceShape(_, a, b)) =>
           val src = shapeNodes(k).vertex
           Seq(LEdge(src, shapeNodes(a.shape).vertex, ShapeForList))
-        case (k, LongServiceShape(_, _, _)) =>
+        case (_, LongServiceShape(_, _, _)) =>
           Seq.empty
         case (k, MapServiceShape(_, kShape, vShape)) =>
           val src = shapeNodes(k).vertex
           Seq(
             LEdge(src, shapeNodes(kShape.shape).vertex, KeyForMap),
             LEdge(src, shapeNodes(vShape.shape).vertex, ValueForMap))
-        case (k, StringServiceShape(_, _, _)) =>
+        case (_, StringServiceShape(_, _, _)) =>
           Seq.empty
-        case (k, StructureServiceShape(_, required, members)) =>
-          val src = shapeNodes(k).vertex
+        case (k0, StructureServiceShape(_, required, members)) =>
+          val src = shapeNodes(k0).vertex
           val reqKeys = required.toList.flatten.toSet
           val req = members
             .filterKeys(k => reqKeys.contains(k.repr))
             .map {
-              case (k, v) =>
+              case (k1, v) =>
                 LEdge(src,
                       shapeNodes(v.shape).vertex,
-                      ItemForStructure(k, required = true))
+                      ItemForStructure(v.locationName.getOrElse(k1), required = true))
             }
           val notreq = members
             .filterKeys(k => !reqKeys.contains(k.repr))
             .map {
-              case (k, v) =>
+              case (k1, v) =>
                 LEdge(src,
                       shapeNodes(v.shape).vertex,
-                      ItemForStructure(k, required = false))
+                      ItemForStructure(v.locationName.getOrElse(k1), required = false))
             }
 
           req ++ notreq
 
-        case (k, TimestampServiceShape(_)) =>
+        case (_, TimestampServiceShape(_)) =>
           Seq.empty
       } toList
 
