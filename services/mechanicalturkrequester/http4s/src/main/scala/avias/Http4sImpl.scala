@@ -2,6 +2,7 @@ package avias.mechanicalturkrequester.http4s
 import org.http4s.Method._
 import avias.mechanicalturkrequester.circe._
 import avias.mechanicalturkrequester.models
+import avias.common.http4s.ClientUtils._
 class AmazonmechanicalturkrequesterClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.mechanicalturkrequester.Amazonmechanicalturkrequester[F] {
   private[this] final val ServiceType: String = "mturk-requester"
   private[this] final val ServiceAndPrefix: Option[String] = Some("MTurkRequesterServiceV20170117")

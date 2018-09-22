@@ -2,6 +2,7 @@ package avias.acm.http4s
 import org.http4s.Method._
 import avias.acm.circe._
 import avias.acm.models
+import avias.common.http4s.ClientUtils._
 class AmazonacmClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.acm.Amazonacm[F] {
   private[this] final val ServiceType: String = "acm"
   private[this] final val ServiceAndPrefix: Option[String] = Some("CertificateManager")

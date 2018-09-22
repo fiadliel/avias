@@ -2,6 +2,7 @@ package avias.athena.http4s
 import org.http4s.Method._
 import avias.athena.circe._
 import avias.athena.models
+import avias.common.http4s.ClientUtils._
 class AmazonathenaClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.athena.Amazonathena[F] {
   private[this] final val ServiceType: String = "athena"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AmazonAthena")

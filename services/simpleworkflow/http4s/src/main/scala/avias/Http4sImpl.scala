@@ -2,6 +2,7 @@ package avias.simpleworkflow.http4s
 import org.http4s.Method._
 import avias.simpleworkflow.circe._
 import avias.simpleworkflow.models
+import avias.common.http4s.ClientUtils._
 class AmazonsimpleworkflowClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.simpleworkflow.Amazonsimpleworkflow[F] {
   private[this] final val ServiceType: String = "swf"
   private[this] final val ServiceAndPrefix: Option[String] = Some("SimpleWorkflowService")

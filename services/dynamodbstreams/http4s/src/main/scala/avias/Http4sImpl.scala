@@ -2,6 +2,7 @@ package avias.dynamodbstreams.http4s
 import org.http4s.Method._
 import avias.dynamodbstreams.circe._
 import avias.dynamodbstreams.models
+import avias.common.http4s.ClientUtils._
 class AmazondynamodbstreamsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.dynamodbstreams.Amazondynamodbstreams[F] {
   private[this] final val ServiceType: String = "streams.dynamodb"
   private[this] final val ServiceAndPrefix: Option[String] = Some("DynamoDBStreams_20120810")

@@ -2,6 +2,7 @@ package avias.ecr.http4s
 import org.http4s.Method._
 import avias.ecr.circe._
 import avias.ecr.models
+import avias.common.http4s.ClientUtils._
 class AmazonecrClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.ecr.Amazonecr[F] {
   private[this] final val ServiceType: String = "ecr"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AmazonEC2ContainerRegistry_V20150921")

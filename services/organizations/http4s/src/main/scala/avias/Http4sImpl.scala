@@ -2,6 +2,7 @@ package avias.organizations.http4s
 import org.http4s.Method._
 import avias.organizations.circe._
 import avias.organizations.models
+import avias.common.http4s.ClientUtils._
 class AmazonorganizationsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.organizations.Amazonorganizations[F] {
   private[this] final val ServiceType: String = "organizations"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWSOrganizationsV20161128")

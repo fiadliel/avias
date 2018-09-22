@@ -1,6 +1,7 @@
 
 val `common-core` = project.in(file("common/core"))
 val `common-circe` = project.in(file("common/circe")).settings(Dependencies.circe).dependsOn(`common-core`)
+val `common-ec2-protocol` = project.in(file("common/ec2-protocol")).settings(Dependencies.simulacrum)
 val `common-http4s` = project.in(file("common/http4s")).settings(Dependencies.http4s).dependsOn(`common-circe`)
 
 val `codebuild-core` = project.in(file("services/codebuild/core"))
@@ -234,3 +235,8 @@ val `athena-http4s` = project.in(file("services/athena/http4s")).dependsOn(`comm
 val `route53domains-core` = project.in(file("services/route53domains/core"))
 val `route53domains-circe` = project.in(file("services/route53domains/circe")).dependsOn(`common-circe`, `route53domains-core`)
 val `route53domains-http4s` = project.in(file("services/route53domains/http4s")).dependsOn(`common-http4s`, `route53domains-circe`)
+
+val `ec2-core` = project.in(file("services/ec2/core"))
+val `ec2-ec2-protocol` = project.in(file("services/ec2/ec2-protocol")).settings(Dependencies.http4s).dependsOn(`common-ec2-protocol`, `ec2-core`)
+val `ec2-http4s` = project.in(file("services/ec2/http4s")).dependsOn(`common-http4s`, `ec2-ec2-protocol`)
+       

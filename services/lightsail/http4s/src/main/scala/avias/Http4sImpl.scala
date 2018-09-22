@@ -2,6 +2,7 @@ package avias.lightsail.http4s
 import org.http4s.Method._
 import avias.lightsail.circe._
 import avias.lightsail.models
+import avias.common.http4s.ClientUtils._
 class AmazonlightsailClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.lightsail.Amazonlightsail[F] {
   private[this] final val ServiceType: String = "lightsail"
   private[this] final val ServiceAndPrefix: Option[String] = Some("Lightsail_20161128")

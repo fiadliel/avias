@@ -9,7 +9,10 @@ import java.nio.file.Path
 
 import cats.effect.Sync
 
-case class StructureInstance(shape: String, documentation: Option[String])
+case class StructureInstance(shape: String,
+                             documentation: Option[String],
+                             locationName: Option[String],
+                            )
 
 case class Service(version: Option[String],
                    metadata: ServiceMetadata,

@@ -1,6 +1,8 @@
 package avias.gen.generator
 
-import scala.meta.{Defn, Enumerator, Lit, Pat, Term, Type}
+import avias.gen.parse.service._
+
+import scala.meta.{Defn, Enumerator, Lit, Name, Pat, Term, Tree, Type}
 import scala.meta.quasiquotes._
 
 case class StructureField(name: String, typ: Type, isOptional: Boolean) {
@@ -30,22 +32,25 @@ case class StructureField(name: String, typ: Type, isOptional: Boolean) {
 trait Structure {
   def typeName: String
   def scalaType: Type
-  def decoder: Defn.Val
-  def encoder: Defn.Val
+  def decoder: Defn
+  def encoder: List[Defn]
   def definition: Defn
   def params: List[StructureField]
 }
 
 object Structure {
-  def apply(typePackage: String, typeName: String, isError: Boolean, params: List[StructureField]): Structure = {
-    if (params.isEmpty)
-      ObjectStructure(typePackage, typeName, isError)
-    else
-      ClassStructure(typePackage, typeName, isError, params)
-  }
+  def apply(typePackage: String, typeName: String, isError: Boolean, params: List[StructureField], serviceProtocol: ServiceProtocol, operationName: Option[String]): Structure =
+    serviceProtocol match {
+      case JsonProtocol if params.isEmpty ⇒
+        JsonObjectStructure(typePackage, typeName, isError)
+      case JsonProtocol ⇒
+        JsonClassStructure(typePackage, typeName, isError, params)
+      case Ec2Protocol ⇒
+        Ec2ClassStructure(typePackage, typeName, isError, params, operationName)
+    }
 }
 
-case class ObjectStructure(typePackage: String, typeName: String, isError: Boolean)
+case class JsonObjectStructure(typePackage: String, typeName: String, isError: Boolean)
     extends Structure {
   val scalaType = Type.Select(Term.Name(typePackage), Type.Name(typeName + ".type"))
   val scalaObjectName = Term.Select(Term.Name(typePackage), Term.Name(typeName))
@@ -56,19 +61,19 @@ case class ObjectStructure(typePackage: String, typeName: String, isError: Boole
     q"final implicit val $decoderName: io.circe.Decoder[$scalaType] = io.circe.Decoder.decodeUnit.as($scalaObjectName)"
   }
 
-  def encoder: Defn.Val = {
+  def encoder: List[Defn.Val] = List({
     val encoderName = Pat.Var(Term.Name(typeName + "Encoder"))
     q"final implicit val $encoderName: io.circe.Encoder[$scalaType] = io.circe.Encoder.instance { o => Json.obj() }"
-  }
+  })
 
   def definition: Defn = {
     q"case object ${Term.Name(typeName)}"
   }
 }
 
-case class ClassStructure(typePackage: String, typeName: String,
-                          isError: Boolean,
-                          params: List[StructureField])
+case class JsonClassStructure(typePackage: String, typeName: String,
+                              isError: Boolean,
+                              params: List[StructureField])
     extends Structure {
   val scalaType = Type.Select(Term.Name(typePackage), Type.Name(typeName))
   val scalaObjectName = Term.Select(Term.Name(typePackage), Term.Name(typeName))
@@ -109,10 +114,13 @@ case class ClassStructure(typePackage: String, typeName: String,
 
     val decoderName = Pat.Var(Term.Name(typeName + "Decoder"))
 
-    q"final implicit val $decoderName: io.circe.Decoder[$scalaType] = io.circe.Decoder.instance { o => $decoderInstance }"
+    q"""
+
+  final implicit val $decoderName: io.circe.Decoder[$scalaType] = io.circe.Decoder.instance { o => $decoderInstance }
+"""
   }
 
-  def encoder: Defn.Val = {
+  def encoder: List[Defn.Val] = List({
     val encoderInstance: Term.Apply = {
       val fields = params.map(i => q"${i.scalaLiteral} -> o.${i.scalaName}.asJson")
       q"Json.obj(..$fields)"
@@ -121,6 +129,79 @@ case class ClassStructure(typePackage: String, typeName: String,
     val encoderName = Pat.Var(Term.Name(typeName + "Encoder"))
 
     q"final implicit val $encoderName: io.circe.Encoder[$scalaType] = io.circe.Encoder.instance { o => $encoderInstance }"
+  })
+
+  def definition: Defn = {
+    q"final case class ${Type.Name(typeName)}(..${params.map(_.scalaMethodParam)})"
+  }
+}
+
+case class Ec2ClassStructure(typePackage: String,
+                             typeName: String,
+                             isError: Boolean,
+                             params: List[StructureField],
+                             maybeAction: Option[String],
+                            ) extends Structure {
+  val scalaType = Type.Select(Term.Name(typePackage), Type.Name(typeName))
+  val scalaObjectName = Term.Select(Term.Name(typePackage), Term.Name(typeName))
+
+  override def decoder: Defn.Val = {
+    q"""
+       val decoder = 42
+     """
+  }
+
+  override def encoder: List[Defn] = {
+    val dtoName = Type.Name(typeName)
+
+    val entityEncoder =
+      (for {
+        action ← maybeAction
+        if typeName == s"${action}Request"
+      } yield {
+        val actionName = Lit.String(action)
+        val encoderName = Term.Name(typeName + "EntityEncoder")
+        val (paramNames, fields) = params.map { p ⇒
+          val paramName = Pat.Var(p.scalaName.copy(p.scalaName.value + "Params"))
+          val requestFieldName: Term.Name = Term.Name(p.scalaMethodParam.name.value)
+
+          Term.Name(p.scalaName.value + "Params") →
+            q"""
+                val $paramName = Ec2RequestEncoder.encode(${p.scalaLiteral}, req.$requestFieldName)
+              """
+        }.unzip
+
+        List(q"""
+            implicit def $encoderName[F[_] : cats.Applicative]: EntityEncoder[F, $dtoName] = EntityEncoder[F, UrlForm].contramap { req ⇒
+              ..$fields
+              UrlForm(("Action" -> $actionName) +: ${paramNames.reduceLeft[Term]((x, v) ⇒ q"""$v ++ $x""")}: _*)
+            }
+          """)
+      }).getOrElse(List.empty)
+
+    val ec2ProtocolEncoder = maybeAction.fold {
+      val encoderName = Pat.Var(Term.Name(typeName + "Ec2Encoder"))
+      val (paramNames, fields) = params.map { p ⇒
+        val paramName = Pat.Var(p.scalaName.copy(p.scalaName.value + "Params"))
+        val requestFieldName: Term.Name = Term.Name(p.scalaMethodParam.name.value)
+
+        Term.Name(p.scalaName.value + "Params") →
+          q"""
+              val $paramName = Ec2RequestEncoder.encode(fieldName + "." + ${p.scalaLiteral}, dto.$requestFieldName)
+            """
+      }.unzip
+      List(
+        q"""
+          implicit val $encoderName: Ec2RequestEncoder[$dtoName] =
+            (fieldName: String, dto: $dtoName) => {
+              ..$fields
+
+              ${paramNames.reduceLeft[Term]((x, v) ⇒ q"""$v ++ $x""")}
+            }
+        """)
+    } (_ ⇒ List.empty)
+
+    entityEncoder ++ ec2ProtocolEncoder
   }
 
   def definition: Defn = {

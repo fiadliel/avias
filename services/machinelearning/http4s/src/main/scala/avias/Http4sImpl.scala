@@ -2,6 +2,7 @@ package avias.machinelearning.http4s
 import org.http4s.Method._
 import avias.machinelearning.circe._
 import avias.machinelearning.models
+import avias.common.http4s.ClientUtils._
 class AmazonmachinelearningClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.machinelearning.Amazonmachinelearning[F] {
   private[this] final val ServiceType: String = "machinelearning"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AmazonML_20141212")

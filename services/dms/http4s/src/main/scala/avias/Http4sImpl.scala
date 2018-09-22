@@ -2,6 +2,7 @@ package avias.dms.http4s
 import org.http4s.Method._
 import avias.dms.circe._
 import avias.dms.models
+import avias.common.http4s.ClientUtils._
 class AmazondmsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.dms.Amazondms[F] {
   private[this] final val ServiceType: String = "dms"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AmazonDMSv20160101")

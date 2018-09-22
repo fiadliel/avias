@@ -2,6 +2,7 @@ package avias.codedeploy.http4s
 import org.http4s.Method._
 import avias.codedeploy.circe._
 import avias.codedeploy.models
+import avias.common.http4s.ClientUtils._
 class AmazoncodedeployClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.codedeploy.Amazoncodedeploy[F] {
   private[this] final val ServiceType: String = "codedeploy"
   private[this] final val ServiceAndPrefix: Option[String] = Some("CodeDeploy_20141006")

@@ -2,6 +2,7 @@ package avias.support.http4s
 import org.http4s.Method._
 import avias.support.circe._
 import avias.support.models
+import avias.common.http4s.ClientUtils._
 class AmazonsupportClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.support.Amazonsupport[F] {
   private[this] final val ServiceType: String = "support"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWSSupport_20130415")

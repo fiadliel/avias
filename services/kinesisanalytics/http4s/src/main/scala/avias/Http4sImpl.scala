@@ -2,6 +2,7 @@ package avias.kinesisanalytics.http4s
 import org.http4s.Method._
 import avias.kinesisanalytics.circe._
 import avias.kinesisanalytics.models
+import avias.common.http4s.ClientUtils._
 class AmazonkinesisanalyticsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.kinesisanalytics.Amazonkinesisanalytics[F] {
   private[this] final val ServiceType: String = "kinesisanalytics"
   private[this] final val ServiceAndPrefix: Option[String] = Some("KinesisAnalytics_20150814")

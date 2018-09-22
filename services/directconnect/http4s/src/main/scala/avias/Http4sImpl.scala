@@ -2,6 +2,7 @@ package avias.directconnect.http4s
 import org.http4s.Method._
 import avias.directconnect.circe._
 import avias.directconnect.models
+import avias.common.http4s.ClientUtils._
 class AmazondirectconnectClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.directconnect.Amazondirectconnect[F] {
   private[this] final val ServiceType: String = "directconnect"
   private[this] final val ServiceAndPrefix: Option[String] = Some("OvertureService")

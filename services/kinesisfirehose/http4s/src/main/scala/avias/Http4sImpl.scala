@@ -2,6 +2,7 @@ package avias.kinesisfirehose.http4s
 import org.http4s.Method._
 import avias.kinesisfirehose.circe._
 import avias.kinesisfirehose.models
+import avias.common.http4s.ClientUtils._
 class AmazonkinesisfirehoseClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.kinesisfirehose.Amazonkinesisfirehose[F] {
   private[this] final val ServiceType: String = "firehose"
   private[this] final val ServiceAndPrefix: Option[String] = Some("Firehose_20150804")

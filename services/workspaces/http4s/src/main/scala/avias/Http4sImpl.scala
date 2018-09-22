@@ -2,6 +2,7 @@ package avias.workspaces.http4s
 import org.http4s.Method._
 import avias.workspaces.circe._
 import avias.workspaces.models
+import avias.common.http4s.ClientUtils._
 class AmazonworkspacesClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.workspaces.Amazonworkspaces[F] {
   private[this] final val ServiceType: String = "workspaces"
   private[this] final val ServiceAndPrefix: Option[String] = Some("WorkspacesService")

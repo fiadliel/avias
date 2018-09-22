@@ -2,6 +2,7 @@ package avias.devicefarm.http4s
 import org.http4s.Method._
 import avias.devicefarm.circe._
 import avias.devicefarm.models
+import avias.common.http4s.ClientUtils._
 class AmazondevicefarmClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.devicefarm.Amazondevicefarm[F] {
   private[this] final val ServiceType: String = "devicefarm"
   private[this] final val ServiceAndPrefix: Option[String] = Some("DeviceFarm_20150623")

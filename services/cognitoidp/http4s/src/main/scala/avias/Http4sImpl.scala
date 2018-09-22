@@ -2,6 +2,7 @@ package avias.cognitoidp.http4s
 import org.http4s.Method._
 import avias.cognitoidp.circe._
 import avias.cognitoidp.models
+import avias.common.http4s.ClientUtils._
 class AmazoncognitoidpClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.cognitoidp.Amazoncognitoidp[F] {
   private[this] final val ServiceType: String = "cognito-idp"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWSCognitoIdentityProviderService")

@@ -2,6 +2,7 @@ package avias.gamelift.http4s
 import org.http4s.Method._
 import avias.gamelift.circe._
 import avias.gamelift.models
+import avias.common.http4s.ClientUtils._
 class AmazongameliftClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.gamelift.Amazongamelift[F] {
   private[this] final val ServiceType: String = "gamelift"
   private[this] final val ServiceAndPrefix: Option[String] = Some("GameLift")

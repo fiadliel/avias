@@ -2,6 +2,7 @@ package avias.kms.http4s
 import org.http4s.Method._
 import avias.kms.circe._
 import avias.kms.models
+import avias.common.http4s.ClientUtils._
 class AmazonkmsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.kms.Amazonkms[F] {
   private[this] final val ServiceType: String = "kms"
   private[this] final val ServiceAndPrefix: Option[String] = Some("TrentService")

@@ -2,6 +2,7 @@ package avias.rekognition.http4s
 import org.http4s.Method._
 import avias.rekognition.circe._
 import avias.rekognition.models
+import avias.common.http4s.ClientUtils._
 class AmazonrekognitionClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.rekognition.Amazonrekognition[F] {
   private[this] final val ServiceType: String = "rekognition"
   private[this] final val ServiceAndPrefix: Option[String] = Some("RekognitionService")

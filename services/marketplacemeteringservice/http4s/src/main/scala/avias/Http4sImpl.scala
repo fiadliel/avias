@@ -2,6 +2,7 @@ package avias.marketplacemeteringservice.http4s
 import org.http4s.Method._
 import avias.marketplacemeteringservice.circe._
 import avias.marketplacemeteringservice.models
+import avias.common.http4s.ClientUtils._
 class AmazonmarketplacemeteringserviceClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.marketplacemeteringservice.Amazonmarketplacemeteringservice[F] {
   private[this] final val ServiceType: String = "metering.marketplace"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWSMPMeteringService")

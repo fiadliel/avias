@@ -2,6 +2,7 @@ package avias.route53domains.http4s
 import org.http4s.Method._
 import avias.route53domains.circe._
 import avias.route53domains.models
+import avias.common.http4s.ClientUtils._
 class Amazonroute53domainsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.route53domains.Amazonroute53domains[F] {
   private[this] final val ServiceType: String = "route53domains"
   private[this] final val ServiceAndPrefix: Option[String] = Some("Route53Domains_v20140515")

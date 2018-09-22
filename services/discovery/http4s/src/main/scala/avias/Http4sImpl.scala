@@ -2,6 +2,7 @@ package avias.discovery.http4s
 import org.http4s.Method._
 import avias.discovery.circe._
 import avias.discovery.models
+import avias.common.http4s.ClientUtils._
 class AmazondiscoveryClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.discovery.Amazondiscovery[F] {
   private[this] final val ServiceType: String = "discovery"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AWSPoseidonService_V2015_11_01")

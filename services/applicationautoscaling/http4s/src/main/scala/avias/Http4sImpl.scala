@@ -2,6 +2,7 @@ package avias.applicationautoscaling.http4s
 import org.http4s.Method._
 import avias.applicationautoscaling.circe._
 import avias.applicationautoscaling.models
+import avias.common.http4s.ClientUtils._
 class AmazonapplicationautoscalingClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.applicationautoscaling.Amazonapplicationautoscaling[F] {
   private[this] final val ServiceType: String = "autoscaling"
   private[this] final val ServiceAndPrefix: Option[String] = Some("AnyScaleFrontendService")

@@ -2,6 +2,7 @@ package avias.codecommit.http4s
 import org.http4s.Method._
 import avias.codecommit.circe._
 import avias.codecommit.models
+import avias.common.http4s.ClientUtils._
 class AmazoncodecommitClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.codecommit.Amazoncodecommit[F] {
   private[this] final val ServiceType: String = "codecommit"
   private[this] final val ServiceAndPrefix: Option[String] = Some("CodeCommit_20150413")

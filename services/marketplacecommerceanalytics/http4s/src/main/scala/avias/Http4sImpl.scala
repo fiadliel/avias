@@ -2,6 +2,7 @@ package avias.marketplacecommerceanalytics.http4s
 import org.http4s.Method._
 import avias.marketplacecommerceanalytics.circe._
 import avias.marketplacecommerceanalytics.models
+import avias.common.http4s.ClientUtils._
 class AmazonmarketplacecommerceanalyticsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.marketplacecommerceanalytics.Amazonmarketplacecommerceanalytics[F] {
   private[this] final val ServiceType: String = "marketplacecommerceanalytics"
   private[this] final val ServiceAndPrefix: Option[String] = Some("MarketplaceCommerceAnalytics20150701")

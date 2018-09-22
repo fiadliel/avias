@@ -2,6 +2,7 @@ package avias.logs.http4s
 import org.http4s.Method._
 import avias.logs.circe._
 import avias.logs.models
+import avias.common.http4s.ClientUtils._
 class AmazonlogsClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.logs.Amazonlogs[F] {
   private[this] final val ServiceType: String = "logs"
   private[this] final val ServiceAndPrefix: Option[String] = Some("Logs_20140328")

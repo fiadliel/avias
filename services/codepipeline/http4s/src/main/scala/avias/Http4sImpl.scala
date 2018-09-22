@@ -2,6 +2,7 @@ package avias.codepipeline.http4s
 import org.http4s.Method._
 import avias.codepipeline.circe._
 import avias.codepipeline.models
+import avias.common.http4s.ClientUtils._
 class AmazoncodepipelineClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.codepipeline.Amazoncodepipeline[F] {
   private[this] final val ServiceType: String = "codepipeline"
   private[this] final val ServiceAndPrefix: Option[String] = Some("CodePipeline_20150709")

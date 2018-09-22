@@ -1,7 +1,7 @@
 package avias.gen.generator
 
 import avias.gen.graph._
-import avias.gen.parse.service.HttpOperation
+import avias.gen.parse.service._
 import quiver.{Context, Graph}
 
 import scala.meta.{Init, Lit, Name, Pkg, Stat, Term, Type}
@@ -71,7 +71,9 @@ case class Trait(servicePackageName: Term.Ref,
                  http4sImplName: Type.Name,
                  endpointPrefix: String,
                  targetPrefix: Option[String],
-                 methods: List[TraitMethod]) {
+                 methods: List[TraitMethod],
+                 serviceProtocol: ServiceProtocol,
+                ) {
   val http4sPackageName = q"$servicePackageName.http4s"
 
   def definition: Pkg = {
@@ -91,11 +93,22 @@ package $servicePackageName {
          case Some(tp) => Term.Apply(Term.Name("Some"), List(Lit.String(tp)))
          case None     => Term.Name("None")
     }
+
+    val codecImport = serviceProtocol match {
+      case JsonProtocol ⇒
+        Option(q"""import $servicePackageName.circe._""")
+      case Ec2Protocol ⇒
+        Option(q"""import $servicePackageName.ec2._""")
+      case _ ⇒
+        None
+    }
+
     q"""
 package $http4sPackageName {
   import org.http4s.Method._
-  import $servicePackageName.circe._
+  ..$codecImport
   import $servicePackageName.models
+  import avias.common.http4s.ClientUtils._
 
   class $http4sImplName[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends $ext {
     private[this] final val ServiceType: String = $serviceType
@@ -117,7 +130,9 @@ object Trait {
                 http4sImplName: Type.Name,
                 endpointPrefix: String,
                 targetPrefix: Option[String],
-                graph: Graph[ServiceNode, NodeName, EdgeLabel]): Trait = {
+                graph: Graph[ServiceNode, NodeName, EdgeLabel],
+                protocol: ServiceProtocol,
+               ): Trait = {
     val serviceTraitName = Term.Name(serviceName.value.replace("-", "_"))
     val servicePackageName = q"$packageName.$serviceTraitName"
     val commonPackageName = q"$packageName.common"
@@ -159,6 +174,6 @@ object Trait {
         )
     })(collection.breakOut)
 
-    Trait(servicePackageName, traitName, http4sImplName, endpointPrefix, targetPrefix, methods)
+    Trait(servicePackageName, traitName, http4sImplName, endpointPrefix, targetPrefix, methods, protocol)
   }
 }

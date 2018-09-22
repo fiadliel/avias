@@ -15,7 +15,7 @@ class CodeGen(serviceName: Term.Name,
               serviceMetadata: ServiceMetadata,
               graph: Graph[ServiceNode, NodeName, EdgeLabel]) {
   val structures: Structures =
-    Structures.fromGraph(serviceName, packageName, graph)
+    Structures.fromGraph(serviceName, packageName, graph, serviceMetadata.protocol)
 
   def traits: Trait = Trait.fromGraph(structures,
     serviceName, packageName,
@@ -23,7 +23,9 @@ class CodeGen(serviceName: Term.Name,
     http4sClientName,
     serviceMetadata.endpointPrefix,
     serviceMetadata.targetPrefix,
-    graph)
+    graph,
+    serviceMetadata.protocol,
+  )
 
 }
 

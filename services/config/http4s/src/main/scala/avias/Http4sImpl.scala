@@ -2,6 +2,7 @@ package avias.config.http4s
 import org.http4s.Method._
 import avias.config.circe._
 import avias.config.models
+import avias.common.http4s.ClientUtils._
 class AmazonconfigClient[F[_]: cats.effect.Sync](client: org.http4s.client.Client[F], awsData: avias.common.AwsData[F]) extends avias.config.Amazonconfig[F] {
   private[this] final val ServiceType: String = "config"
   private[this] final val ServiceAndPrefix: Option[String] = Some("StarlingDoveService")
